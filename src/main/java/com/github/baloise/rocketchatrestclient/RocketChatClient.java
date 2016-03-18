@@ -133,14 +133,14 @@ public class RocketChatClient {
 		return lazyVersions;
 	}
 
-	public void send(String roomName, String messsage) throws IOException {
+	public void send(String roomName, String message) throws IOException {
 		Room room = getRoom(roomName);
 		if(room == null) throw new IOException(format("unknown room : %s", roomName));
-		send(room, messsage);
+		send(room, message);
 	}
 
-	public void send(Room room, String messsage) throws IOException {
-		authenticatedPost("rooms/"+room._id+"/send" , new Message(messsage));
+	public void send(Room room, String message) throws IOException {
+		authenticatedPost("rooms/"+room._id+"/send" , new Message(message));
 	}
 
 	public Room getRoom(String room) throws IOException {
