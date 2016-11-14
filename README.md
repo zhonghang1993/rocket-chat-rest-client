@@ -3,7 +3,7 @@ Lightweight java client for [Rocket.Chat](https://rocket.chat/)'s [REST API](htt
 
 ### Java
 ```java
-RocketChatClient rc = new RocketChatClient("https://demo.rocket.chat/", "<user>", "<password>");
+RocketChatClient rc = new RocketChatClient("https://demo.rocket.chat/api/", "<user>", "<password>");
 
 // get meta info
 System.out.println("Api version is "+rc.getApiVersion());
