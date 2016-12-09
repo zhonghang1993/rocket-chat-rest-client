@@ -1,5 +1,13 @@
 # rocket-chat-rest-client
-Lightweight java client for [Rocket.Chat](https://rocket.chat/)'s [REST API](https://github.com/RocketChat/Rocket.Chat/wiki/REST-APIs) using [Unirest](http://unirest.io/java.html) and [Jackson](https://github.com/FasterXML/jackson-databind).
+Lightweight Java client for [Rocket.Chat](https://rocket.chat/)'s [REST API](https://rocket.chat/docs/developer-guides/rest-api) using [Unirest](http://unirest.io/java.html) and [Jackson](https://github.com/FasterXML/jackson-databind).
+
+## Notes
+* Rocket.Chat v0.48 rewrote the REST API, see the [pull request #5140](https://github.com/RocketChat/Rocket.Chat/pull/5140) for details
+* This api is still a work in progress, feel free to submit pull requests to add functionality
+* Server url doesn't require `api/` anymore, but it can still be provided
+
+## Example Usage
+**TODO**: Fix the Java example when this gets flushed out
 
 ### Java
 ```java
@@ -21,6 +29,7 @@ rc.send("test", "Hello from REST client" + new Date());
 // no comment ;-)
 rc.logout();
 ```
+
 ### Maven
 ```xml
 <repositories>
@@ -34,7 +43,7 @@ rc.logout();
 	<dependency>
 		<groupId>com.github.baloise</groupId>
 		<artifactId>rocket-chat-rest-client</artifactId>
-		<version>master-SNAPSHOT</version>
+		<version>0.1.0-SNAPSHOT</version>
 	</dependency>
 </dependencies>
 ```
