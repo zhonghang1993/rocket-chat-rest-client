@@ -2,7 +2,8 @@ package com.github.baloise.rocketchatrestclient;
 
 import java.io.IOException;
 
-import com.github.baloise.rocketchatrestclient.model.Response;
+import com.github.baloise.rocketchatrestclient.model.Room;
+import com.github.baloise.rocketchatrestclient.model.ServerInfo;
 import com.github.baloise.rocketchatrestclient.model.User;
 
 /**
@@ -29,6 +30,35 @@ public class RocketChatClient {
     }
 
     /**
+     * Forces a logout and clears the auth token if no exception happened.
+     *
+     * @throws IOException is thrown if there was a problem connecting, including if the result
+     *             wasn't successful
+     */
+    public void logout() throws IOException {
+        this.callBuilder.logout();
+    }
+    
+    /**
+     * Gets the {@link ServerInfo} from the server, containing the version.
+     * 
+     * @return the {@link ServerInfo}
+     * @throws IOException is thrown if there was a problem connecting, including if the result
+     *             wasn't successful
+     */
+    public ServerInfo getServerInformation() throws IOException {
+        RocketChatClientResponse res = this.callBuilder.buildCall(RocketChatRestApiV1.Info);
+        
+        if (!res.isSuccessful())
+            throw new IOException("The call out to get the server information was unsuccessful.");
+        
+        if (!res.hasServerInfo())
+            throw new IOException("The server information was not retrieved from the server.");
+        
+        return res.getServerInfo();
+    }
+
+    /**
      * Gets <strong>all</strong> of the users from a Rocket.Chat server, if you have a ton this will
      * take some time.
      *
@@ -37,13 +67,13 @@ public class RocketChatClient {
      *             wasn't successful
      */
     public User[] getUsers() throws IOException {
-        Response res = this.callBuilder.buildCall(RocketChatRestApiV1.UsersList);
+        RocketChatClientResponse res = this.callBuilder.buildCall(RocketChatRestApiV1.UsersList);
 
         if (!res.isSuccessful())
-            throw new IOException("The call to get the User's Information was unsuccessful.");
+            throw new IOException("The call to get the Users was unsuccessful.");
 
-        if (!res.isUsers())
-            throw new IOException("Get User Information failed to retrieve a user.");
+        if (!res.hasUsers())
+            throw new IOException("Get User Information failed to retrieve the users.");
 
         return res.getUsers();
     }
@@ -57,14 +87,54 @@ public class RocketChatClient {
      *             wasn't successful or there is no user
      */
     public User getUser(String userId) throws IOException {
-        Response res = this.callBuilder.buildCall(RocketChatRestApiV1.UsersInfo, new RocketChatQueryParams("userId", userId));
+        RocketChatClientResponse res = this.callBuilder.buildCall(RocketChatRestApiV1.UsersInfo, new RocketChatQueryParams("userId", userId));
 
         if (!res.isSuccessful())
             throw new IOException("The call to get the User's Information was unsuccessful.");
 
-        if (!res.isUser())
+        if (!res.hasUser())
             throw new IOException("Get User Information failed to retrieve a user.");
 
         return res.getUser();
+    }
+
+    /**
+     * Gets <strong>all</strong> of the public channels from a Rocket.Chat server, if you have a ton
+     * this will take some time.
+     *
+     * @return an array of {@link Room}s that are channels
+     * @throws IOException is thrown if there was a problem connecting, including if the result
+     *             wasn't successful
+     */
+    public Room[] getChannels() throws IOException {
+        RocketChatClientResponse res = this.callBuilder.buildCall(RocketChatRestApiV1.ChannelsList);
+
+        if (!res.isSuccessful())
+            throw new IOException("The call to get the Public Channels was unsuccessful.");
+
+        if (!res.hasChannels())
+            throw new IOException("Get Channels failed to retrieve the channels.");
+
+        return res.getChannels();
+    }
+    
+    /**
+     * Retrieves information from the server about the channel.
+     * 
+     * @param channelId the "_id" of the channel to get
+     * @return the {@link Room} which is the channel
+     * @throws IOException is thrown if there was a problem connecting, including if the result
+     *             wasn't successful
+     */
+    public Room getChannel(String channelId) throws IOException {
+        RocketChatClientResponse res = this.callBuilder.buildCall(RocketChatRestApiV1.ChannelsInfo, new RocketChatQueryParams("roomId", channelId));
+        
+        if (!res.isSuccessful())
+            throw new IOException("The call to get the Channel's Information was unsuccessful.");
+        
+        if (!res.hasChannel())
+            throw new IOException("The response does not contain any channel information.");
+        
+        return res.getChannel();
     }
 }

@@ -1,5 +1,8 @@
 package com.github.baloise.rocketchatrestclient.model;
 
+import com.fasterxml.jackson.annotation.JsonGetter;
+import com.fasterxml.jackson.annotation.JsonSetter;
+
 /**
  * Represents an object that has the value "_id".
  *
@@ -10,19 +13,21 @@ public abstract class Identified implements Comparable<Identified> {
     private String _id;
 
     /**
-     * Sets the "_id" of this object, it is ugly however it is required for the deserialization.
-     * 
+     * Sets the "_id" of this object.
+     *
      * @param id the value to set
      */
-    public void set_id(String id) {
+    @JsonSetter("_id")
+    public void setId(String id) {
         this._id = id;
     }
 
     /**
      * Gets the "_id" field of this record.
-     * 
+     *
      * @return the _id value of this record
      */
+    @JsonGetter("_id")
     public String getId() {
         return this._id;
     }

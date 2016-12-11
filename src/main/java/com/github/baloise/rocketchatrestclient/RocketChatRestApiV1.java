@@ -10,10 +10,26 @@ import com.github.baloise.rocketchatrestclient.util.HttpMethods;
  * @version 0.0.1
  */
 public enum RocketChatRestApiV1 {
-    /** Retrieves a list of all the users in the server. */
-    UsersList("users.list", HttpMethods.GET, true),
+    /** Retrieves a <strong>public</strong> channel's information. */
+    ChannelsInfo("channels.info", HttpMethods.GET, true),
+    /** Retrieves a list of all the <strong>public</strong> channels. */
+    ChannelsList("channels.list", HttpMethods.GET, true),
+    /** Deletes a chat message. */
+    ChatDelete("chat.delete", HttpMethods.POST, true),
+    /** Sends a new chat message */
+    ChatPostMessage("chat.postMessage", HttpMethods.POST, true),
+    /** Retrieves information about a <strong>private</strong> group, but only if the user is part of it. */
+    GroupsInfo("groups.info", HttpMethods.GET, true),
+    /** Retrieves a list of all the <strong>private</strong> groups the auth'd user has joined. */
+    GroupsList("groups.list", HttpMethods.GET, true),
+    /** Retrieves a list of all the direct message rooms the auth'd user has. */
+    ImsList("ims.list", HttpMethods.GET, true),
+    /** Gets the information about the server, including version and build commit. */
+    Info("info", HttpMethods.GET, false),
     /** Retrieves the user information from the server. */
-    UsersInfo("users.info", HttpMethods.GET, true);
+    UsersInfo("users.info", HttpMethods.GET, true),
+    /** Retrieves a list of all the users in the server. */
+    UsersList("users.list", HttpMethods.GET, true);
 
     private String methodName;
     private HttpMethods httpMethod;

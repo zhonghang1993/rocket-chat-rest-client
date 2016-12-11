@@ -7,7 +7,6 @@ import org.json.JSONObject;
 
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.github.baloise.rocketchatrestclient.model.Response;
 import com.mashape.unirest.http.HttpResponse;
 import com.mashape.unirest.http.JsonNode;
 import com.mashape.unirest.http.Unirest;
@@ -30,11 +29,17 @@ public class RocketChatClientCallBuilder {
     private String authToken;
     private String userId;
 
+    //- http://localhost:3000
+    //- http://localhost:3000/
+    //- http://localhost:3000/api
+    //- http://localhost:3000/api/
     protected RocketChatClientCallBuilder(String serverUrl, String user, String password) {
-        if (!serverUrl.endsWith("api/")) {
-            this.serverUrl = serverUrl + (serverUrl.endsWith("/") ? "" : "/") + "api/";
+        //I am not the greatest with if statements like these, so feel free to submit
+        //a pull request to fix this XD
+        if (serverUrl.endsWith("/")) {
+            this.serverUrl = serverUrl + (serverUrl.endsWith("api/") ? "" : "api/");
         } else {
-            this.serverUrl = serverUrl;
+            this.serverUrl = serverUrl + (serverUrl.endsWith("api") ? "/" : "/api/");
         }
 
         this.user = user;
@@ -45,15 +50,15 @@ public class RocketChatClientCallBuilder {
         this.objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
     }
 
-    protected Response buildCall(RocketChatRestApiV1 call) throws IOException {
+    protected RocketChatClientResponse buildCall(RocketChatRestApiV1 call) throws IOException {
         return this.buildCall(call, null, null);
     }
 
-    protected Response buildCall(RocketChatRestApiV1 call, RocketChatQueryParams queryParams) throws IOException {
+    protected RocketChatClientResponse buildCall(RocketChatRestApiV1 call, RocketChatQueryParams queryParams) throws IOException {
         return this.buildCall(call, queryParams, null);
     }
 
-    protected Response buildCall(RocketChatRestApiV1 call, RocketChatQueryParams queryParams, Object body) throws IOException {
+    protected RocketChatClientResponse buildCall(RocketChatRestApiV1 call, RocketChatQueryParams queryParams, Object body) throws IOException {
         if (call.requiresAuth() && (authToken.isEmpty() || userId.isEmpty())) {
             login();
         }
@@ -68,11 +73,21 @@ public class RocketChatClientCallBuilder {
         }
     }
 
+    protected void logout() throws IOException {
+        try {
+            Unirest.post(serverUrl + "v1/logout").asString();
+            this.authToken = "";
+            this.userId = "";
+        } catch (UnirestException e) {
+            throw new IOException(e);
+        }
+    }
+
     private void login() throws IOException {
         HttpResponse<JsonNode> loginResult;
 
         try {
-            loginResult = Unirest.post(serverUrl + "v1/login").field("user", user).field("password", password).asJson();
+            loginResult = Unirest.post(serverUrl + "v1/login").field("username", user).field("password", password).asJson();
         } catch (UnirestException e) {
             throw new IOException(e);
         }
@@ -88,7 +103,7 @@ public class RocketChatClientCallBuilder {
         this.userId = data.getString("userId");
     }
 
-    private Response buildGetCall(RocketChatRestApiV1 call, RocketChatQueryParams queryParams) throws IOException {
+    private RocketChatClientResponse buildGetCall(RocketChatRestApiV1 call, RocketChatQueryParams queryParams) throws IOException {
         GetRequest req = Unirest.get(serverUrl + call.getMethodName());
 
         if (call.requiresAuth()) {
@@ -105,13 +120,13 @@ public class RocketChatClientCallBuilder {
         try {
             HttpResponse<String> res = req.asString();
 
-            return objectMapper.readValue(res.getBody(), Response.class);
+            return objectMapper.readValue(res.getBody(), RocketChatClientResponse.class);
         } catch (UnirestException e) {
             throw new IOException(e);
         }
     }
 
-    private Response buildPostCall(RocketChatRestApiV1 call, RocketChatQueryParams queryParams, Object body) throws IOException {
+    private RocketChatClientResponse buildPostCall(RocketChatRestApiV1 call, RocketChatQueryParams queryParams, Object body) throws IOException {
         HttpRequestWithBody req = Unirest.post(serverUrl + call.getMethodName()).header("Content-Type", "application/json");
 
         if (call.requiresAuth()) {
@@ -132,7 +147,7 @@ public class RocketChatClientCallBuilder {
         try {
             HttpResponse<String> res = req.asString();
 
-            return objectMapper.readValue(res.getBody(), Response.class);
+            return objectMapper.readValue(res.getBody(), RocketChatClientResponse.class);
         } catch (UnirestException e) {
             throw new IOException(e);
         }
