@@ -137,4 +137,31 @@ public class RocketChatClient {
         
         return res.getChannel();
     }
+    
+	/**
+	 * Creates a new channel with only the creator added
+	 * 
+	 * @param channelName
+	 *            the of the channel to create
+	 * @return the {@link Room} which is the newly created channel
+	 * @throws IOException
+	 *             is thrown if there was a problem connecting, including if the
+	 *             result wasn't successful
+	 */
+	public Room createChannel(String channelName) throws IOException {
+
+		Room room = new Room();
+		room.setName(channelName);
+		
+		RocketChatClientResponse res = this.callBuilder.buildCall(RocketChatRestApiV1.ChannelsCreate, null, room);
+
+		if (!res.isSuccessful())
+			throw new IOException("The call to create a Channel was unsuccessful.");
+
+		if (!res.hasChannel())
+			throw new IOException("The response does not contain any channel information.");
+
+		return res.getChannel();
+	}
+	
 }

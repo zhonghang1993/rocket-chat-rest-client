@@ -14,6 +14,8 @@ public enum RocketChatRestApiV1 {
     ChannelsInfo("channels.info", HttpMethods.GET, true),
     /** Retrieves a list of all the <strong>public</strong> channels. */
     ChannelsList("channels.list", HttpMethods.GET, true),
+    /** Retrieves a list of all the <strong>public</strong> channels. */
+    ChannelsCreate("channels.create", HttpMethods.POST, true),
     /** Deletes a chat message. */
     ChatDelete("chat.delete", HttpMethods.POST, true),
     /** Sends a new chat message */
