@@ -8,6 +8,13 @@ import com.github.baloise.rocketchatrestclient.model.Room;
 import com.github.baloise.rocketchatrestclient.model.ServerInfo;
 import com.github.baloise.rocketchatrestclient.model.User;
 
+/**
+* This IT tests basic functionality of the client.
+*
+* @author Ryne Fagin (rynefagin)
+* @since 0.1.1
+* @version 0.0.1
+*/
 public class RocketChatClientTestIT {
 	
 	String serverUrl = "http://localhost/api/";

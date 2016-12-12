@@ -7,6 +7,7 @@ Lightweight Java client for [Rocket.Chat](https://rocket.chat/)'s [REST API](htt
 * Server url doesn't require `api/` anymore, but it can still be provided
 * None of the results are cached, every time a method is called it goes out and gets it
 * The method calls are sync and blocking
+* Docker must be installed
 
 ### Java
 ```java
