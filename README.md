@@ -7,7 +7,7 @@ Lightweight Java client for [Rocket.Chat](https://rocket.chat/)'s [REST API](htt
 * Server url doesn't require `api/` anymore, but it can still be provided
 * None of the results are cached, every time a method is called it goes out and gets it
 * The method calls are sync and blocking
-* Docker must be installed
+* Maven is configured to startup Rocket.Chat v.0.48-develop via docker therefore docker must be installed.
 
 ### Java
 ```java
@@ -47,3 +47,18 @@ rc.logout();
 	</dependency>
 </dependencies>
 ```
+
+### Compiling
+
+The maven build needs [Docker](https://www.docker.com) for integration testing. Please install it for your platform before running
+
+```
+mvn clean install
+```
+
+To keep the docker containers running:
+
+```
+mvn -Ddocker.keepRunning clean install
+```
+
