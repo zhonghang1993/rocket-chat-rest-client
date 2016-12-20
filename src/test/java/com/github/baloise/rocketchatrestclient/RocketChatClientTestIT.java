@@ -9,14 +9,14 @@ import com.github.baloise.rocketchatrestclient.model.ServerInfo;
 import com.github.baloise.rocketchatrestclient.model.User;
 
 /**
-* This IT tests basic functionality of the client.
-*
-* @author Ryne Fagin (rynefagin)
-* @since 0.1.1
-* @version 0.0.1
-*/
+ * This IT tests basic functionality of the client.
+ *
+ * @author Ryne Fagin (rynefagin)
+ * @since 0.1.1
+ * @version 0.0.1
+ */
 public class RocketChatClientTestIT {
-	
+
 	String serverUrl = "http://localhost/api/";
 	String user = "admin";
 	String password = "supersecret";
@@ -24,7 +24,7 @@ public class RocketChatClientTestIT {
 
 	@Test
 	public void testRocketCatExists() throws Exception {
-		
+
 		ServerInfo info = rc.getServerInformation();
 		assertTrue("The Rocket.Chat Version is empty, when it shouldn't be.", !info.getVersion().isEmpty());
 
@@ -36,6 +36,7 @@ public class RocketChatClientTestIT {
 	@Test
 	public void testCreateChannel() throws Exception {
 		Room room = rc.createChannel("test1234");
-		assertTrue( "Room Id shouldn't be null if the room was created", (room.getId() !=null && !room.getId().isEmpty()));
+		assertTrue("Room Id shouldn't be null if the room was created",
+				(room.getId() != null && !room.getId().isEmpty()));
 	}
 }
