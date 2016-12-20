@@ -4,8 +4,6 @@ import java.io.IOException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
 
 import com.github.baloise.rocketchatrestclient.model.Room;
 import com.github.baloise.rocketchatrestclient.model.ServerInfo;
@@ -20,8 +18,14 @@ import com.github.baloise.rocketchatrestclient.model.User;
  * @since 0.0.1
  */
 public class RocketChatClient {
-	private RocketChatClientCallBuilder callBuilder;
+	private static final String USER_ID_PARAM_KEY = "userId";
+	private static final String INCLUSIVE_PARAM_KEY = "inclusive";
+	private static final String OLDEST_PARAM_KEY = "oldest";
+	private static final String LATEST_PARAM_KEY = "latest";
+	private static final String ROOM_ID_PARAM_KEY = "roomId";
 	private static final DateFormat df = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm'Z'");
+
+	private RocketChatClientCallBuilder callBuilder;
 
 	/**
 	 * Initialize a new instance of the client providing the server's url along
@@ -103,7 +107,7 @@ public class RocketChatClient {
 	 */
 	public User getUser(String userId) throws IOException {
 		RocketChatClientResponse res = this.callBuilder.buildCall(RocketChatRestApiV1.UsersInfo,
-				new RocketChatQueryParams("userId", userId));
+				new RocketChatQueryParams(USER_ID_PARAM_KEY, userId));
 
 		if (!res.isSuccessful())
 			throw new IOException("The call to get the User's Information was unsuccessful.");
@@ -133,29 +137,6 @@ public class RocketChatClient {
 			throw new IOException("Get Channels failed to retrieve the channels.");
 
 		return res.getChannels();
-	}
-
-	/**
-	 * Retrieves information from the server about the channel.
-	 * 
-	 * @param channelId
-	 *            the "_id" of the channel to get
-	 * @return the {@link Room} which is the channel
-	 * @throws IOException
-	 *             is thrown if there was a problem connecting, including if the
-	 *             result wasn't successful
-	 */
-	public Room getChannel(String channelId) throws IOException {
-		RocketChatClientResponse res = this.callBuilder.buildCall(RocketChatRestApiV1.ChannelsInfo,
-				new RocketChatQueryParams("roomId", channelId));
-
-		if (!res.isSuccessful())
-			throw new IOException("The call to get the Channel's Information was unsuccessful.");
-
-		if (!res.hasChannel())
-			throw new IOException("The response does not contain any channel information.");
-
-		return res.getChannel();
 	}
 
 	/**
@@ -197,7 +178,7 @@ public class RocketChatClient {
 	 */
 	public Room addAllUsersToChannel(String channelId) throws IOException {
 		RocketChatClientResponse res = this.callBuilder.buildCall(RocketChatRestApiV1.ChannelsAddAll,
-				new RocketChatQueryParams("roomId", channelId));
+				new RocketChatQueryParams(ROOM_ID_PARAM_KEY, channelId));
 
 		if (!res.isSuccessful())
 			throw new IOException("The call to get the Channel's Information was unsuccessful.");
@@ -219,7 +200,7 @@ public class RocketChatClient {
 	 */
 	public void archiveChannel(String channelId) throws IOException {
 		RocketChatClientResponse res = this.callBuilder.buildCall(RocketChatRestApiV1.ChannelsArchive, null,
-				new RocketChatQueryParams("roomId", channelId));
+				new RocketChatQueryParams(ROOM_ID_PARAM_KEY, channelId));
 
 		if (!res.isSuccessful())
 			throw new IOException("The call to archive the Channel was unsuccessful.");
@@ -250,14 +231,14 @@ public class RocketChatClient {
 		RocketChatQueryParams rcqp = new RocketChatQueryParams();
 
 		if (latest != null && oldest != null && inclusive != null) {
-			rcqp.add("latest", df.format(latest));
-			rcqp.add("oldest", df.format(oldest));
-			rcqp.add("inclusive", inclusive.toString());
+			rcqp.add(LATEST_PARAM_KEY, df.format(latest));
+			rcqp.add(OLDEST_PARAM_KEY, df.format(oldest));
+			rcqp.add(INCLUSIVE_PARAM_KEY, inclusive.toString());
 		} else {
 			throw new IOException("latest, oldest and inclusive must not be null");
 		}
 
-		rcqp.add("roomId", channelId);
+		rcqp.add(ROOM_ID_PARAM_KEY, channelId);
 
 		RocketChatClientResponse res = this.callBuilder.buildCall(RocketChatRestApiV1.ChannelsCleanHistory, null, rcqp);
 
@@ -277,7 +258,7 @@ public class RocketChatClient {
 	 */
 	public void closeChannel(String channelId) throws IOException {
 		RocketChatClientResponse res = this.callBuilder.buildCall(RocketChatRestApiV1.ChannelsClose, null,
-				new RocketChatQueryParams("roomId", channelId));
+				new RocketChatQueryParams(ROOM_ID_PARAM_KEY, channelId));
 
 		if (!res.isSuccessful())
 			throw new IOException("The call to close the Channel was unsuccessful.");
@@ -296,7 +277,7 @@ public class RocketChatClient {
 	 */
 	public Room getChannelInfo(String channelId) throws IOException {
 		RocketChatClientResponse res = this.callBuilder.buildCall(RocketChatRestApiV1.ChannelsInfo,
-				new RocketChatQueryParams("roomId", channelId));
+				new RocketChatQueryParams(ROOM_ID_PARAM_KEY, channelId));
 
 		if (!res.isSuccessful())
 			throw new IOException("The call to get the Channel's information failed.");
@@ -321,37 +302,35 @@ public class RocketChatClient {
 	 */
 	public void inviteUserToChannel(String groupId, String userId) throws IOException {
 		RocketChatQueryParams bodyMap = new RocketChatQueryParams();
-		bodyMap.add("roomId", groupId).add("userId", userId);
+		bodyMap.add(ROOM_ID_PARAM_KEY, groupId).add(USER_ID_PARAM_KEY, userId);
 
 		RocketChatClientResponse res = this.callBuilder.buildCall(RocketChatRestApiV1.ChannelsInvite, null, bodyMap);
 
 		if (!res.isSuccessful())
 			throw new IOException("The call to invite a User to an Channel was unsuccessful.");
 	}
+  	
+  	 /**
+     * Gets <strong>all</strong> of the private groups the calling user has access to from a Rocket.Chat server, if you have a ton
+     * this will take some time.
+     *
+     * @return an array of {@link Room}s that are groups
+     * @throws IOException is thrown if there was a problem connecting, including if the result
+     *             wasn't successful
+     */
+    public Room[] getGroups() throws IOException {
+        RocketChatClientResponse res = this.callBuilder.buildCall(RocketChatRestApiV1.GroupsList);
 
-	/**
-	 * Gets <strong>all</strong> of the private groups the calling user has
-	 * access to from a Rocket.Chat server, if you have a ton this will take
-	 * some time.
-	 *
-	 * @return an array of {@link Room}s that are groups
-	 * @throws IOException
-	 *             is thrown if there was a problem connecting, including if the
-	 *             result wasn't successful
-	 */
-	public Room[] getGroups() throws IOException {
-		RocketChatClientResponse res = this.callBuilder.buildCall(RocketChatRestApiV1.GroupsList);
+        if (!res.isSuccessful())
+            throw new IOException("The call to get the private Groups was unsuccessful.");
 
-		if (!res.isSuccessful())
-			throw new IOException("The call to get the private Groups was unsuccessful.");
+        if (!res.hasGroups())
+            throw new IOException("Get Groups failed to retrieve the groups.");
 
-		if (!res.hasGroups())
-			throw new IOException("Get Groups failed to retrieve the groups.");
-
-		return res.getGroups();
-	}
-
-	/**
+        return res.getGroups();
+    }
+    
+    /**
 	 * Creates a new private group with only the creator added
 	 * 
 	 * @param groupName
@@ -387,9 +366,7 @@ public class RocketChatClient {
 	 *             result wasn't successful
 	 */
 	public void archiveGroup(String groupId) throws IOException {
-		Map<String, Object> qp = new HashMap<String, Object>();
-		qp.put("roomId", groupId);
-		RocketChatClientResponse res = this.callBuilder.buildCall(RocketChatRestApiV1.GroupsArchive, null, qp);
+		RocketChatClientResponse res = this.callBuilder.buildCall(RocketChatRestApiV1.GroupsArchive, null, new RocketChatQueryParams(ROOM_ID_PARAM_KEY, groupId));
 
 		if (!res.isSuccessful())
 			throw new IOException("The call to archive the Group was unsuccessful.");
@@ -406,9 +383,7 @@ public class RocketChatClient {
 	 *             result wasn't successful
 	 */
 	public void closeGroup(String groupId) throws IOException {
-		Map<String, Object> bodyMap = new HashMap<String, Object>();
-		bodyMap.put("roomId", groupId);
-		RocketChatClientResponse res = this.callBuilder.buildCall(RocketChatRestApiV1.GroupsClose, null, bodyMap);
+		RocketChatClientResponse res = this.callBuilder.buildCall(RocketChatRestApiV1.GroupsClose, null, new RocketChatQueryParams(ROOM_ID_PARAM_KEY, groupId));
 
 		if (!res.isSuccessful())
 			throw new IOException("The call to close the Channel was unsuccessful.");
@@ -427,7 +402,7 @@ public class RocketChatClient {
 	 */
 	public Room getGroupInfo(String groupId) throws IOException {
 		RocketChatClientResponse res = this.callBuilder.buildCall(RocketChatRestApiV1.GroupsInfo,
-				new RocketChatQueryParams("roomId", groupId));
+				new RocketChatQueryParams(ROOM_ID_PARAM_KEY, groupId));
 
 		if (!res.isSuccessful())
 			throw new IOException("The call to get the Group's information failed.");
@@ -451,11 +426,8 @@ public class RocketChatClient {
 	 *             result wasn't successful
 	 */
 	public void inviteUserToGroup(String groupId, String userId) throws IOException {
-		Map<String, Object> bodyMap = new HashMap<String, Object>();
-		bodyMap.put("roomId", groupId);
-		bodyMap.put("userId", userId);
-
-		RocketChatClientResponse res = this.callBuilder.buildCall(RocketChatRestApiV1.GroupsInvite, null, bodyMap);
+		RocketChatClientResponse res = this.callBuilder.buildCall(RocketChatRestApiV1.GroupsInvite, null, 
+				new RocketChatQueryParams(ROOM_ID_PARAM_KEY, groupId).add(USER_ID_PARAM_KEY, userId));
 
 		if (!res.isSuccessful())
 			throw new IOException("The call to invite a User to an Group was unsuccessful.");
