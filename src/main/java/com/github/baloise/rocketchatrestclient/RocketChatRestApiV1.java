@@ -1,5 +1,9 @@
 package com.github.baloise.rocketchatrestclient;
 
+import com.github.baloise.rocketchatrestclient.model.ChannelHistoryRequest;
+import com.github.baloise.rocketchatrestclient.model.Room;
+import com.github.baloise.rocketchatrestclient.model.RoomRequest;
+import com.github.baloise.rocketchatrestclient.model.RoomUserRequest;
 import com.github.baloise.rocketchatrestclient.util.HttpMethods;
 
 /**
@@ -11,54 +15,56 @@ import com.github.baloise.rocketchatrestclient.util.HttpMethods;
  */
 public enum RocketChatRestApiV1 {
     /** Retrieves a <strong>public</strong> channel's information. */
-    ChannelsInfo("channels.info", HttpMethods.GET, true),
+    ChannelsInfo("channels.info", HttpMethods.GET, true, null),
     /** Retrieves a list of all the <strong>public</strong> channels. */
-    ChannelsList("channels.list", HttpMethods.GET, true),
+    ChannelsList("channels.list", HttpMethods.GET, true, null),
     /** Creates a new <strong>public</strong> channel. */
-    ChannelsCreate("channels.create", HttpMethods.POST, true),
+    ChannelsCreate("channels.create", HttpMethods.POST, true, Room.class),
     /** Adds <strong>all</strong> users to the specified channel. */
-    ChannelsAddAll("channels.addAll", HttpMethods.POST, true),
+    ChannelsAddAll("channels.addAll", HttpMethods.POST, true, RoomRequest.class),
     /** Archives a channel. */
-    ChannelsArchive("channels.archive", HttpMethods.POST, true),
+    ChannelsArchive("channels.archive", HttpMethods.POST, true, RoomRequest.class),
     /** Closes a channel. */
-    ChannelsClose("channels.close", HttpMethods.POST, true),
+    ChannelsClose("channels.close", HttpMethods.POST, true, RoomRequest.class),
     /** Cleans up a channel (removing messages) */
-    ChannelsCleanHistory("channels.cleanHistory", HttpMethods.POST, true),
+    ChannelsCleanHistory("channels.cleanHistory", HttpMethods.POST, true, ChannelHistoryRequest.class),
     /** Invites a user to join a channel **/
-    ChannelsInvite("channels.invite", HttpMethods.POST, true),
+    ChannelsInvite("channels.invite", HttpMethods.POST, true, RoomUserRequest.class),
     /** Deletes a chat message. */
-    ChatDelete("chat.delete", HttpMethods.POST, true),
+    ChatDelete("chat.delete", HttpMethods.POST, true, null), //TODO: need a request class for this API
     /** Sends a new chat message */
-    ChatPostMessage("chat.postMessage", HttpMethods.POST, true),
+    ChatPostMessage("chat.postMessage", HttpMethods.POST, true, null), //TODO need a request class for this API
     /** Retrieves information about a <strong>private</strong> group, but only if the user is part of it. */
-    GroupsInfo("groups.info", HttpMethods.GET, true),
+    GroupsInfo("groups.info", HttpMethods.GET, true, null),
     /** Retrieves a list of all the <strong>private</strong> groups the auth'd user has joined. */
-    GroupsList("groups.list", HttpMethods.GET, true),
+    GroupsList("groups.list", HttpMethods.GET, true, null),
     /** Creates a new <strong>private</strong> group. */
-    GroupsCreate("groups.create", HttpMethods.POST, true),
+    GroupsCreate("groups.create", HttpMethods.POST, true, Room.class),
     /** Archives a group. */
-    GroupsArchive("groups.archive", HttpMethods.POST, true),
+    GroupsArchive("groups.archive", HttpMethods.POST, true, RoomRequest.class),
     /** Closes a group. */
-    GroupsClose("groups.close", HttpMethods.POST, true),
+    GroupsClose("groups.close", HttpMethods.POST, true, RoomRequest.class),
     /** Invites a user to join a group **/
-    GroupsInvite("groups.invite", HttpMethods.POST, true),
+    GroupsInvite("groups.invite", HttpMethods.POST, true, RoomUserRequest.class),
     /** Retrieves a list of all the direct message rooms the auth'd user has. */
-    ImsList("ims.list", HttpMethods.GET, true),
+    ImsList("ims.list", HttpMethods.GET, true, null),
     /** Gets the information about the server, including version and build commit. */
-    Info("info", HttpMethods.GET, false),
+    Info("info", HttpMethods.GET, false, null),
     /** Retrieves the user information from the server. */
-    UsersInfo("users.info", HttpMethods.GET, true),
+    UsersInfo("users.info", HttpMethods.GET, true, null),
     /** Retrieves a list of all the users in the server. */
-    UsersList("users.list", HttpMethods.GET, true);
+    UsersList("users.list", HttpMethods.GET, true, null);
 
     private String methodName;
     private HttpMethods httpMethod;
     private boolean requiresAuth;
+    private Class bodyClass;
 
-    private RocketChatRestApiV1(String methodName, HttpMethods httpMethod, boolean requiresAuth) {
+    private RocketChatRestApiV1(String methodName, HttpMethods httpMethod, boolean requiresAuth, Class bodyClass) {
         this.methodName = methodName;
         this.httpMethod = httpMethod;
         this.requiresAuth = requiresAuth;
+        this.bodyClass = bodyClass;
     }
 
     /**
@@ -86,5 +92,14 @@ public enum RocketChatRestApiV1 {
      */
     public boolean requiresAuth() {
         return this.requiresAuth;
+    }
+    
+    /**
+     * Gets the {@link Class class} which should be used as the body for the request.
+     *
+     * @return {@link Class class} to be used
+     */
+    public Class getBodyClass() {
+    	return this.bodyClass;
     }
 }
