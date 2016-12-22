@@ -2,6 +2,7 @@ package com.github.baloise.rocketchatrestclient;
 
 import com.github.baloise.rocketchatrestclient.model.ChannelHistoryRequest;
 import com.github.baloise.rocketchatrestclient.model.Room;
+import com.github.baloise.rocketchatrestclient.model.RoomNameRequest;
 import com.github.baloise.rocketchatrestclient.model.RoomRequest;
 import com.github.baloise.rocketchatrestclient.model.RoomUserRequest;
 import com.github.baloise.rocketchatrestclient.util.HttpMethods;
@@ -24,12 +25,22 @@ public enum RocketChatRestApiV1 {
     ChannelsAddAll("channels.addAll", HttpMethods.POST, true, RoomRequest.class),
     /** Archives a channel. */
     ChannelsArchive("channels.archive", HttpMethods.POST, true, RoomRequest.class),
+    /** Unarchives a channel. */
+    ChannelsUnarchive("channels.unarchive", HttpMethods.POST, true, RoomRequest.class),
     /** Closes a channel. */
     ChannelsClose("channels.close", HttpMethods.POST, true, RoomRequest.class),
     /** Cleans up a channel (removing messages) */
     ChannelsCleanHistory("channels.cleanHistory", HttpMethods.POST, true, ChannelHistoryRequest.class),
     /** Invites a user to join a channel **/
     ChannelsInvite("channels.invite", HttpMethods.POST, true, RoomUserRequest.class),
+    /** Removes a user from the channel **/
+    ChannelsKick("channels.kick", HttpMethods.POST, true, RoomUserRequest.class),
+    /** Removes the callee from the channel **/
+    ChannelsLeave("channels.leave", HttpMethods.POST, true, RoomRequest.class),
+    /** Renames the channel **/
+    ChannelsRename("channels.rename", HttpMethods.POST, true, RoomNameRequest.class),
+    /** Adds the channel back to the user’s list of channels.**/
+    ChannelsOpen("channels.open", HttpMethods.POST, true, RoomRequest.class),
     /** Deletes a chat message. */
     ChatDelete("chat.delete", HttpMethods.POST, true, null), //TODO: need a request class for this API
     /** Sends a new chat message */
@@ -42,10 +53,20 @@ public enum RocketChatRestApiV1 {
     GroupsCreate("groups.create", HttpMethods.POST, true, Room.class),
     /** Archives a group. */
     GroupsArchive("groups.archive", HttpMethods.POST, true, RoomRequest.class),
+    /** Unarchives a group. */
+    GroupsUnarchive("groups.unarchive", HttpMethods.POST, true, RoomRequest.class),
     /** Closes a group. */
     GroupsClose("groups.close", HttpMethods.POST, true, RoomRequest.class),
     /** Invites a user to join a group **/
     GroupsInvite("groups.invite", HttpMethods.POST, true, RoomUserRequest.class),
+    /** Removes a user from the group **/
+    GroupsKick("groups.kick", HttpMethods.POST, true, RoomUserRequest.class),
+    /** Removes the callee from the group **/
+    GroupsLeave("groups.leave", HttpMethods.POST, true, RoomRequest.class),
+    /** Adds the group back to the user’s list of groups.**/
+    GroupsOpen("groups.open", HttpMethods.POST, true, RoomRequest.class),
+    /** Renames the group **/
+    GroupsRename("groups.rename", HttpMethods.POST, true, RoomNameRequest.class),
     /** Retrieves a list of all the direct message rooms the auth'd user has. */
     ImsList("ims.list", HttpMethods.GET, true, null),
     /** Gets the information about the server, including version and build commit. */

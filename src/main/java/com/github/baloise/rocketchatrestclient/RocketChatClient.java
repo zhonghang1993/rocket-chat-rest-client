@@ -7,6 +7,7 @@ import java.util.Date;
 
 import com.github.baloise.rocketchatrestclient.model.ChannelHistoryRequest;
 import com.github.baloise.rocketchatrestclient.model.Room;
+import com.github.baloise.rocketchatrestclient.model.RoomNameRequest;
 import com.github.baloise.rocketchatrestclient.model.RoomRequest;
 import com.github.baloise.rocketchatrestclient.model.RoomUserRequest;
 import com.github.baloise.rocketchatrestclient.model.ServerInfo;
@@ -193,7 +194,7 @@ public class RocketChatClient {
 	 * Archives a channel
 	 * 
 	 * @param channelId
-	 *            the "_id" of the room to add all users to
+	 *            the "_id" of the room to archive
 	 * @throws IOException
 	 *             is thrown if there was a problem connecting, including if the
 	 *             result wasn't successful
@@ -204,6 +205,24 @@ public class RocketChatClient {
 
 		if (!res.isSuccessful())
 			throw new IOException("The call to archive the Channel was unsuccessful.");
+
+	}
+	
+	/**
+	 * Unarchives a channel
+	 * 
+	 * @param channelId
+	 *            the "_id" of the room to unarchive
+	 * @throws IOException
+	 *             is thrown if there was a problem connecting, including if the
+	 *             result wasn't successful
+	 */
+	public void unarchiveChannel(String channelId) throws IOException {
+		RocketChatClientResponse res = this.callBuilder.buildCall(RocketChatRestApiV1.ChannelsUnarchive, null,
+				new RoomRequest(channelId));
+
+		if (!res.isSuccessful())
+			throw new IOException("The call to unarchive the Channel was unsuccessful.");
 
 	}
 
@@ -251,7 +270,7 @@ public class RocketChatClient {
 	 * Closes a channel
 	 * 
 	 * @param channelId
-	 *            the "_id" of the room to add all users to
+	 *            the "_id" of the room to close
 	 * @throws IOException
 	 *             is thrown if there was a problem connecting, including if the
 	 *             result wasn't successful
@@ -262,6 +281,24 @@ public class RocketChatClient {
 
 		if (!res.isSuccessful())
 			throw new IOException("The call to close the Channel was unsuccessful.");
+
+	}
+
+	/**
+	 * Opens a channel
+	 * 
+	 * @param channelId
+	 *            the "_id" of the room to open
+	 * @throws IOException
+	 *             is thrown if there was a problem connecting, including if the
+	 *             result wasn't successful
+	 */
+	public void openChannel(String channelId) throws IOException {
+		RocketChatClientResponse res = this.callBuilder.buildCall(RocketChatRestApiV1.ChannelsOpen, null, 
+				new RoomRequest(channelId));
+		
+		if (!res.isSuccessful())
+			throw new IOException("The call to open the Channel was unsuccessful.");
 
 	}
 
@@ -292,22 +329,77 @@ public class RocketChatClient {
 	/**
 	 * Invites a user to a channel
 	 * 
-	 * @param groupId
-	 *            the "_id" of the room to get information
+	 * @param channelId
+	 *            the "_id" of the room to invite user to
 	 * @param userId
 	 *            the "_id" of the user to invite
 	 * @throws IOException
 	 *             is thrown if there was a problem connecting, including if the
 	 *             result wasn't successful
 	 */
-	public void inviteUserToChannel(String groupId, String userId) throws IOException {
+	public void inviteUserToChannel(String channelId, String userId) throws IOException {
 		RocketChatClientResponse res = this.callBuilder.buildCall(RocketChatRestApiV1.ChannelsInvite, null, 
-					new RoomUserRequest(groupId, userId));
+					new RoomUserRequest(channelId, userId));
 
 		if (!res.isSuccessful())
-			throw new IOException("The call to invite a User to an Channel was unsuccessful.");
+			throw new IOException("The call to invite a User to a Channel was unsuccessful.");
+	}
+	
+	/**
+	 * Removes a user from a channel
+	 * 
+	 * @param channelId
+	 *            the "_id" of the room to remove user from
+	 * @param userId
+	 *            the "_id" of the user to remove
+	 * @throws IOException
+	 *             is thrown if there was a problem connecting, including if the
+	 *             result wasn't successful
+	 */
+	public void removeUserFromChannel(String channelId, String userId) throws IOException {
+		RocketChatClientResponse res = this.callBuilder.buildCall(RocketChatRestApiV1.ChannelsKick, null, 
+				new RoomUserRequest(channelId, userId));
+
+		if (!res.isSuccessful())
+			throw new IOException("The call to remove a User from a Channel was unsuccessful.");
 	}
   	
+	/**
+	 * Removes the callee from a channel
+	 * 
+	 * @param channelId
+	 *            the "_id" of the room to leave
+	 * @throws IOException
+	 *             is thrown if there was a problem connecting, including if the
+	 *             result wasn't successful
+	 */
+	public void leaveChannel(String channelId) throws IOException {
+		RocketChatClientResponse res = this.callBuilder.buildCall(RocketChatRestApiV1.ChannelsLeave, null, 
+				new RoomRequest(channelId));
+
+		if (!res.isSuccessful())
+			throw new IOException("The call to leave a Channel was unsuccessful.");
+	}
+	
+	/**
+	 * Renames the channel
+	 * 
+	 * @param channelId
+	 *            the "_id" of the room to rename
+	 * @param name
+	 *            the new name of the room
+	 * @throws IOException
+	 *             is thrown if there was a problem connecting, including if the
+	 *             result wasn't successful
+	 */
+	public void renameChannel(String channelId, String name) throws IOException {
+		RocketChatClientResponse res = this.callBuilder.buildCall(RocketChatRestApiV1.ChannelsRename, null, 
+				new RoomNameRequest(channelId, name));
+		
+		if (!res.isSuccessful())
+			throw new IOException("The call to rename a Channel was unsuccessful");
+	}
+	
   	 /**
      * Gets <strong>all</strong> of the private groups the calling user has access to from a Rocket.Chat server, if you have a ton
      * this will take some time.
@@ -371,6 +463,24 @@ public class RocketChatClient {
 			throw new IOException("The call to archive the Group was unsuccessful.");
 
 	}
+	
+	/**
+	 * Unarchives a group
+	 * 
+	 * @param groupId
+	 *            the "_id" of the room to unarchive
+	 * @throws IOException
+	 *             is thrown if there was a problem connecting, including if the
+	 *             result wasn't successful
+	 */
+	public void unarchiveGroup(String groupId) throws IOException {
+		RocketChatClientResponse res = this.callBuilder.buildCall(RocketChatRestApiV1.GroupsUnarchive, null, 
+				new RoomRequest(groupId));
+		
+		if (!res.isSuccessful())
+			throw new IOException("The call to unarchive the Group was unsuccessful.");
+
+	}
 
 	/**
 	 * Closes a group
@@ -386,7 +496,25 @@ public class RocketChatClient {
 				new RoomRequest(groupId));
 		
 		if (!res.isSuccessful())
-			throw new IOException("The call to close the Channel was unsuccessful.");
+			throw new IOException("The call to close the Group was unsuccessful.");
+
+	}
+	
+	/**
+	 * Opens a group
+	 * 
+	 * @param groupId
+	 *            the "_id" of the room to open
+	 * @throws IOException
+	 *             is thrown if there was a problem connecting, including if the
+	 *             result wasn't successful
+	 */
+	public void openGroup(String groupId) throws IOException {
+		RocketChatClientResponse res = this.callBuilder.buildCall(RocketChatRestApiV1.GroupsOpen, null, 
+				new RoomRequest(groupId));
+		
+		if (!res.isSuccessful())
+			throw new IOException("The call to open the Group was unsuccessful.");
 
 	}
 
@@ -418,7 +546,7 @@ public class RocketChatClient {
 	 * Invites a user to a private group
 	 * 
 	 * @param groupId
-	 *            the "_id" of the room to get information
+	 *            the "_id" of the room to invite user to
 	 * @param userId
 	 *            the "_id" of the user to invite
 	 * @throws IOException
@@ -430,6 +558,61 @@ public class RocketChatClient {
 				new RoomUserRequest(groupId, userId));
 
 		if (!res.isSuccessful())
-			throw new IOException("The call to invite a User to an Group was unsuccessful.");
+			throw new IOException("The call to invite a User to a Group was unsuccessful.");
+	}
+
+	/**
+	 * Removes a user from a private group
+	 * 
+	 * @param groupId
+	 *            the "_id" of the room to remove user from
+	 * @param userId
+	 *            the "_id" of the user to remove
+	 * @throws IOException
+	 *             is thrown if there was a problem connecting, including if the
+	 *             result wasn't successful
+	 */
+	public void removeUserFromGroup(String groupId, String userId) throws IOException {
+		RocketChatClientResponse res = this.callBuilder.buildCall(RocketChatRestApiV1.GroupsKick, null, 
+				new RoomUserRequest(groupId, userId));
+
+		if (!res.isSuccessful())
+			throw new IOException("The call to remove a User from a Group was unsuccessful.");
+	}
+	
+	/**
+	 * Removes the callee from a group
+	 * 
+	 * @param groupId
+	 *            the "_id" of the room to leave
+	 * @throws IOException
+	 *             is thrown if there was a problem connecting, including if the
+	 *             result wasn't successful
+	 */
+	public void leaveGroup(String groupId) throws IOException {
+		RocketChatClientResponse res = this.callBuilder.buildCall(RocketChatRestApiV1.GroupsLeave, null, 
+				new RoomRequest(groupId));
+
+		if (!res.isSuccessful())
+			throw new IOException("The call to leave a Group was unsuccessful.");
+	}
+	
+	/**
+	 * Renames the group
+	 * 
+	 * @param groupId
+	 *            the "_id" of the room to rename
+	 * @param name
+	 *            the new name of the room
+	 * @throws IOException
+	 *             is thrown if there was a problem connecting, including if the
+	 *             result wasn't successful
+	 */
+	public void renameGroup(String groupId, String name) throws IOException {
+		RocketChatClientResponse res = this.callBuilder.buildCall(RocketChatRestApiV1.GroupsRename, null, 
+				new RoomNameRequest(groupId, name));
+		
+		if (!res.isSuccessful())
+			throw new IOException("The call to rename a Group was unsuccessful");
 	}
 }

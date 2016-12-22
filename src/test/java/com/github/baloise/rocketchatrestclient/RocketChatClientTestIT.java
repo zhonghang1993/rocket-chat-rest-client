@@ -1,6 +1,6 @@
 package com.github.baloise.rocketchatrestclient;
 
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 
 import org.junit.Test;
 
@@ -17,6 +17,10 @@ import com.github.baloise.rocketchatrestclient.model.User;
  */
 public class RocketChatClientTestIT {
 
+	private static final String TEST_CASE_8 = "test0008";
+	private static final String TEST_CASE_7 = "test0007";
+	private static final String TEST_CASE_6 = "test0006";
+	private static final String TEST_CASE_5 = "test0005";
 	private static final String TEST_CASE_4 = "test0004";
 	private static final String TEST_CASE_3 = "test0003";
 	private static final String TEST_CASE_2 = "test0002";
@@ -41,23 +45,35 @@ public class RocketChatClientTestIT {
 	}
 	
 	@Test
-	public void testCreateAndCloseChannel() throws Exception{
+	public void testCreateCloseAndOpenChannel() throws Exception{
 		String roomNameTest = TEST_CASE_0;
 		Room room = rc.createChannel(roomNameTest);
 		assertTrue( "Room Id shouldn't be null if the room was created", (room.getId() !=null && !room.getId().isEmpty()));
 	
-		boolean isCalled = false;
+		boolean isClosed = false;
 		Room[] rooms = rc.getChannels();
 		for(Room room1: rooms ){
 			if(room1.getName().equals(roomNameTest))
 			{
 				rc.closeChannel(room.getId());
-				isCalled = true;
+				isClosed = true;
 				break;
 			}
 		}
 		
-		assertTrue("Error, channel did not exist for closing",isCalled);
+		assertTrue("Error, channel did not exist for closing",isClosed);
+
+		boolean isOpened = false;
+		for(Room room1: rooms ){
+			if(room1.getName().equals(roomNameTest))
+			{
+				rc.openChannel(room.getId());
+				isOpened = true;
+				break;
+			}
+		}
+		
+		assertTrue("Error, channel did not exist for opening",isOpened);
 	}
 	
 	@Test
@@ -68,27 +84,39 @@ public class RocketChatClientTestIT {
 	}
 	
 	@Test
-	public void testCreateAndArchiveChannel() throws Exception{
+	public void testCreateArchiveAndUnarchiveChannel() throws Exception{
 		String roomNameTest = TEST_CASE_1;
 		Room room = rc.createChannel(roomNameTest);
 		assertTrue( "Room Id shouldn't be null if the room was created", (room.getId() !=null && !room.getId().isEmpty()));
 	
-		boolean isCalled = false;
+		boolean isArchived = false;
 		Room[] rooms = rc.getChannels();
 		for(Room room1: rooms ){
 			if(room1.getName().equals(roomNameTest))
 			{
 				rc.archiveChannel(room.getId());
-				isCalled = true;
+				isArchived = true;
 				break;
 			}
 		}
 		
-		assertTrue("Error, channel did not exist for archiving",isCalled);
+		assertTrue("Error, channel did not exist for archiving",isArchived);
+		
+		boolean isUnarchived = false;
+		for(Room room1: rooms ){
+			if(room1.getName().equals(roomNameTest))
+			{
+				rc.unarchiveChannel(room.getId());
+				isUnarchived = true;
+				break;
+			}
+		}
+		
+		assertTrue("Error, channel did not exist for unarchiving",isUnarchived);
 	}
 	
 	@Test
-	public void testCreateAndCloseGroup() throws Exception{
+	public void testCreateCloseAndOpenGroup() throws Exception{
 		String roomNameTest = TEST_CASE_2;
 		Room room = rc.createGroup(roomNameTest);
 		assertTrue( "Room Id shouldn't be null if the room was created", (room.getId() !=null && !room.getId().isEmpty()));
@@ -108,23 +136,35 @@ public class RocketChatClientTestIT {
 	}
 	
 	@Test
-	public void testCreateAndArchiveGroup() throws Exception{
+	public void testCreateArchiveAndUnarchiveGroup() throws Exception{
 		String roomNameTest = TEST_CASE_3;
 		Room room = rc.createGroup(roomNameTest);
 		assertTrue( "Room Id shouldn't be null if the room was created", (room.getId() !=null && !room.getId().isEmpty()));
 	
-		boolean isCalled = false;
+		boolean isArchived = false;
 		Room[] rooms = rc.getGroups();
 		for(Room room1: rooms ){
 			if(room1.getName().equals(roomNameTest))
 			{
 				rc.archiveGroup(room.getId());
-				isCalled = true;
+				isArchived = true;
 				break;
 			}
 		}
 		
-		assertTrue("Error, group did not exist for archiving",isCalled);
+		assertTrue("Error, group did not exist for archiving",isArchived);
+
+		boolean isUnarchived = false;
+		for(Room room1: rooms ){
+			if(room1.getName().equals(roomNameTest))
+			{
+				rc.unarchiveGroup(room.getId());
+				isUnarchived = true;
+				break;
+			}
+		}
+		
+		assertTrue("Error, group did not exist for unarchiving",isUnarchived);
 	}
 	
 	@Test
@@ -138,4 +178,28 @@ public class RocketChatClientTestIT {
 		assertTrue("Error, room was null", room1 != null);
 		assertTrue("Error, group names were not equal", room1.getName().equals(roomNameTest));
 	}
+	
+	@Test
+	public void testRenameChannel() throws Exception {
+		String roomNameTest = TEST_CASE_5;
+		Room room = rc.createChannel(roomNameTest);
+		assertTrue( "Room Id shouldn't be null if the room was created", (room.getId() !=null && !room.getId().isEmpty()));
+		assertEquals(TEST_CASE_5, room.getName());
+		
+		rc.renameChannel(room.getId(), TEST_CASE_6);
+		room = rc.getChannelInfo(room.getId());
+		assertEquals(TEST_CASE_6, room.getName());
+	}
+
+	@Test
+	public void testRenameGroup() throws Exception {
+		String roomNameTest = TEST_CASE_7;
+		Room room = rc.createGroup(roomNameTest);
+		assertTrue( "Room Id shouldn't be null if the room was created", (room.getId() !=null && !room.getId().isEmpty()));
+		assertEquals(TEST_CASE_7, room.getName());
+		
+		rc.renameGroup(room.getId(), TEST_CASE_8);
+		room = rc.getGroupInfo(room.getId());
+		assertEquals(TEST_CASE_8, room.getName());
+	}	
 }
