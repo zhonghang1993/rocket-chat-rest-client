@@ -111,8 +111,8 @@ public class RocketChatClientCallBuilder {
             req.header("X-User-Id", userId);
         }
 
-        if (queryParams != null && !queryParams.isEmpty()) {
-            for (Entry<? extends String, ? extends String> e : queryParams.entrySet()) {
+        if (queryParams != null && queryParams.get() != null && !queryParams.isEmpty()) {
+            for (Entry<? extends String, ? extends String> e : queryParams.get().entrySet()) {
                 req.queryString(e.getKey(), e.getValue());
             }
         }
@@ -134,13 +134,13 @@ public class RocketChatClientCallBuilder {
             req.header("X-User-Id", userId);
         }
 
-        if (queryParams != null && !queryParams.isEmpty()) {
-            for (Entry<? extends String, ? extends String> e : queryParams.entrySet()) {
+        if (queryParams != null && queryParams.get() != null && !queryParams.isEmpty()) {
+            for (Entry<? extends String, ? extends String> e : queryParams.get().entrySet()) {
                 req.queryString(e.getKey(), e.getValue());
             }
         }
 
-        if (body != null) {
+        if (body != null && body.getClass().equals(call.getBodyClass())) {
             req.body(objectMapper.writeValueAsString(body));
         }
 

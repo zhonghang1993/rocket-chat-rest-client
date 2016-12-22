@@ -10,17 +10,12 @@ import java.util.Map;
  * @since 0.1.0
  * @version 0.0.1
  */
-public class RocketChatQueryParams extends HashMap<String, String> {
-    /**
-	 * 
-	 */
-	private static final long serialVersionUID = -2303728479578621534L;
-
-	//private HashMap<String, String> queryParams;
+public class RocketChatQueryParams {
+    private HashMap<String, String> queryParams;
 
     /** Initializes an empty query parameters object. */
     public RocketChatQueryParams() {
-        super();
+        this.queryParams = new HashMap<String, String>();
     }
 
     /**
@@ -30,7 +25,26 @@ public class RocketChatQueryParams extends HashMap<String, String> {
      * @param value the value of the parameter
      */
     public RocketChatQueryParams(String param, String value) {
-        super.put(param, value);
+        this.queryParams = new HashMap<String, String>();
+        this.queryParams.put(param, value);
+    }
+
+    /**
+     * Check to see if there are any query parameters.
+     *
+     * @return whether the query parameters is empty
+     */
+    public boolean isEmpty() {
+        return this.queryParams.isEmpty();
+    }
+
+    /**
+     * Gets all of the query parameters.
+     *
+     * @return the query parameters
+     */
+    public Map<? extends String, ? extends String> get() {
+        return this.queryParams;
     }
 
     /**
@@ -41,7 +55,7 @@ public class RocketChatQueryParams extends HashMap<String, String> {
      * @return the instance of the {@link RocketChatQueryParams}
      */
     public RocketChatQueryParams add(String param, String value) {
-        super.put(param, value);
+        this.queryParams.put(param, value);
         return this;
     }
 
@@ -52,7 +66,7 @@ public class RocketChatQueryParams extends HashMap<String, String> {
      * @return the instance of the {@link RocketChatQueryParams}
      */
     public RocketChatQueryParams addAll(Map<? extends String, ? extends String> params) {
-        super.putAll(params);
+        this.queryParams.putAll(params);
         return this;
     }
 }
