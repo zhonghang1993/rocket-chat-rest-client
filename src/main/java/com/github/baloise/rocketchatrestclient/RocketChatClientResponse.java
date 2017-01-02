@@ -11,6 +11,7 @@ import com.github.baloise.rocketchatrestclient.model.User;
 //it's just meant to handle the response from the server
 public class RocketChatClientResponse {
     private boolean success;
+    private String error;
     private ServerInfo info;
     private Message[] messages;
     private Message message;
@@ -26,17 +27,29 @@ public class RocketChatClientResponse {
     public boolean isSuccessful() {
         return this.success;
     }
-    
+
+    public void setError(String error) {
+        this.error = error;
+    }
+
+    public String getError() {
+        return this.error;
+    }
+
+    public boolean hasAnError() {
+        return !this.error.isEmpty();
+    }
+
     @JsonSetter("info")
     public void setServerInfo(ServerInfo info) {
         this.info = info;
     }
-    
+
     @JsonGetter("info")
     public ServerInfo getServerInfo() {
         return this.info;
     }
-    
+
     public boolean hasServerInfo() {
         return this.info != null;
     }
@@ -88,65 +101,65 @@ public class RocketChatClientResponse {
     public boolean hasUser() {
         return this.user != null;
     }
-    
+
     public void setChannels(Room[] channels) {
         this.channels = channels;
     }
-    
+
     public Room[] getChannels() {
         return this.channels;
     }
-    
+
     public boolean hasChannels() {
         return this.channels != null;
     }
-    
+
     public void setChannel(Room channel) {
         this.channel = channel;
     }
-    
+
     public Room getChannel() {
         return this.channel;
     }
-    
+
     public boolean hasChannel() {
         return this.channel != null;
     }
-    
+
     public void setGroups(Room[] groups) {
         this.groups = groups;
     }
-    
+
     public Room[] getGroups() {
         return this.groups;
     }
-    
+
     public boolean hasGroups() {
         return this.groups != null;
     }
-    
+
     public void setGroup(Room group) {
         this.group = group;
     }
-    
+
     public Room getGroup() {
         return this.group;
     }
-    
+
     public boolean hasGroup() {
         return this.group != null;
     }
-    
+
     @JsonSetter("ims")
     public void setDirectMessages(Room[] dms) {
         this.ims = dms;
     }
-    
+
     @JsonGetter("ims")
     public Room[] getDirectMessages() {
         return this.ims;
     }
-    
+
     public boolean hasDirectMessages() {
         return this.ims != null;
     }

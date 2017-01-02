@@ -12,7 +12,7 @@ public class Room extends Identified {
     private String[] usernames;
     private int msgCount;
     private Date created, updated;
-    private boolean readOnly, sysMsgs;
+    private boolean readOnly, sysMsgs, archived;
 
     public Room() { }
 
@@ -112,6 +112,15 @@ public class Room extends Identified {
     @JsonGetter("_updatedAt")
     public Date getUpdatedDate() {
         return this.updated;
+    }
+    
+    public void setArchived(boolean archived) {
+        this.archived = archived;
+    }
+    
+    @JsonGetter("archived")
+    public boolean isArchived() {
+        return this.archived;
     }
 
     @JsonSetter("ro")
