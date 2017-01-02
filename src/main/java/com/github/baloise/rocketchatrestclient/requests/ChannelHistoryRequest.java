@@ -1,4 +1,4 @@
-package com.github.baloise.rocketchatrestclient.model;
+package com.github.baloise.rocketchatrestclient.requests;
 
 public class ChannelHistoryRequest {
 

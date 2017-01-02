@@ -14,12 +14,30 @@ public class Room extends Identified {
     private Date created, updated;
     private boolean readOnly, sysMsgs;
 
+    public Room() { }
+
+    public Room(String roomInfo, boolean isName) {
+        if (isName) {
+            this.setName(roomInfo);
+        } else {
+            this.setId(roomInfo);
+        }
+    }
+
     public void setName(String name) {
         this.name = name;
     }
 
     public String getName() {
         return this.name;
+    }
+
+    public void setRoomId(String id) {
+        this.setId(id);
+    }
+
+    public String getRoomId() {
+        return this.getId();
     }
 
     @JsonSetter("t")

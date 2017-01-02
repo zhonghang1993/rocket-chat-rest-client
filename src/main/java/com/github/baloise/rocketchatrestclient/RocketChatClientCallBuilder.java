@@ -140,7 +140,7 @@ public class RocketChatClientCallBuilder {
             }
         }
 
-        if (body != null && body.getClass().equals(call.getBodyClass())) {
+        if (body != null) {
             req.body(objectMapper.writeValueAsString(body));
         }
 
