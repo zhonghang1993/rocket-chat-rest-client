@@ -6,7 +6,9 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
+import com.github.baloise.rocketchatrestclient.model.Channel;
 import com.github.baloise.rocketchatrestclient.model.Room;
+import com.github.baloise.rocketchatrestclient.model.RoomType;
 import com.github.baloise.rocketchatrestclient.model.ServerInfo;
 import com.github.baloise.rocketchatrestclient.model.User;
 
@@ -81,9 +83,8 @@ public class RocketChatClientTestIT {
     @Test
     public void testCreateArchiveAndUnarchiveChannel() throws Exception {
         String roomNameTest = TEST_CASE_1;
-        Room room = this.rc.createChannel(roomNameTest);
-        assertTrue("Room Id shouldn't be null if the room was created",
-                (room.getId() != null && !room.getId().isEmpty()));
+        Channel room = this.rc.createChannel(roomNameTest);
+        assertTrue("Room Id shouldn't be null if the room was created", (room.getId() != null && !room.getId().isEmpty()));
 
         this.rc.archiveChannel(room);
         room = this.rc.getChannelInfo(room);
@@ -108,15 +109,14 @@ public class RocketChatClientTestIT {
     public void testCreateArchiveAndUnarchiveGroup() throws Exception {
         String roomNameTest = TEST_CASE_3;
         Room room = this.rc.createGroup(roomNameTest);
-        assertTrue("Room Id shouldn't be null if the room was created",
-                (room.getId() != null && !room.getId().isEmpty()));
+        assertTrue("Room Id shouldn't be null if the room was created", (room.getId() != null && !room.getId().isEmpty()));
 
-        this.rc.archiveChannel(room);
-        room = this.rc.getChannelInfo(room);
+        this.rc.archiveGroup(room);
+        room = this.rc.getGroupInfo(room);
         assertTrue("The group should be archived, but it wasn't.", room.isArchived());
 
-        this.rc.unarchiveChannel(room);
-        room = this.rc.getChannelInfo(room);
+        this.rc.unarchiveGroup(room);
+        room = this.rc.getGroupInfo(room);
         assertFalse("The group shouldn't be archived, but it is.", room.isArchived());
     }
 
