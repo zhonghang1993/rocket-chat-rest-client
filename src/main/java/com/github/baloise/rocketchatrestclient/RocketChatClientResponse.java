@@ -3,6 +3,7 @@ package com.github.baloise.rocketchatrestclient;
 import com.fasterxml.jackson.annotation.JsonGetter;
 import com.fasterxml.jackson.annotation.JsonSetter;
 import com.github.baloise.rocketchatrestclient.model.Channel;
+import com.github.baloise.rocketchatrestclient.model.Group;
 import com.github.baloise.rocketchatrestclient.model.Message;
 import com.github.baloise.rocketchatrestclient.model.Room;
 import com.github.baloise.rocketchatrestclient.model.ServerInfo;
@@ -20,8 +21,9 @@ public class RocketChatClientResponse {
     private User user;
     private Channel[] channels;
     private Channel channel;
-    private Room[] ims, groups;
-    private Room group;
+    private Room[] ims;
+    private Group[] groups;
+    private Group group;
 
     public void setSuccess(boolean result) {
         this.success = result;
@@ -129,11 +131,11 @@ public class RocketChatClientResponse {
         return this.channel != null;
     }
 
-    public void setGroups(Room[] groups) {
+    public void setGroups(Group[] groups) {
         this.groups = groups;
     }
 
-    public Room[] getGroups() {
+    public Group[] getGroups() {
         return this.groups;
     }
 
@@ -141,11 +143,11 @@ public class RocketChatClientResponse {
         return this.groups != null;
     }
 
-    public void setGroup(Room group) {
+    public void setGroup(Group group) {
         this.group = group;
     }
 
-    public Room getGroup() {
+    public Group getGroup() {
         return this.group;
     }
 

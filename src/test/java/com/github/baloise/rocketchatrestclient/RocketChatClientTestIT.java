@@ -7,8 +7,8 @@ import org.junit.Before;
 import org.junit.Test;
 
 import com.github.baloise.rocketchatrestclient.model.Channel;
+import com.github.baloise.rocketchatrestclient.model.Group;
 import com.github.baloise.rocketchatrestclient.model.Room;
-import com.github.baloise.rocketchatrestclient.model.RoomType;
 import com.github.baloise.rocketchatrestclient.model.ServerInfo;
 import com.github.baloise.rocketchatrestclient.model.User;
 
@@ -31,9 +31,9 @@ public class RocketChatClientTestIT {
     private static final String TEST_CASE_1234 = "test1234";
     private static final String TEST_CASE_0 = "test0000";
 
-    String serverUrl = "http://localhost:3000/api/";
-    String user = "graywolf336";
-    String password = "graywolf336";
+    String serverUrl = "http://localhost/api/";
+    String user = "admin";
+    String password = "supersecret";
     RocketChatClient rc;
 
     @Before
@@ -108,7 +108,7 @@ public class RocketChatClientTestIT {
     @Test
     public void testCreateArchiveAndUnarchiveGroup() throws Exception {
         String roomNameTest = TEST_CASE_3;
-        Room room = this.rc.createGroup(roomNameTest);
+        Group room = this.rc.createGroup(roomNameTest);
         assertTrue("Room Id shouldn't be null if the room was created", (room.getId() != null && !room.getId().isEmpty()));
 
         this.rc.archiveGroup(room);
@@ -123,11 +123,10 @@ public class RocketChatClientTestIT {
     @Test
     public void testCreateAndGetGroup() throws Exception {
         String roomNameTest = TEST_CASE_4;
-        Room room = this.rc.createGroup(roomNameTest);
-        assertTrue("Room Id shouldn't be null if the room was created",
-                (room.getId() != null && !room.getId().isEmpty()));
+        Group room = this.rc.createGroup(roomNameTest);
+        assertTrue("Room Id shouldn't be null if the room was created", room.getId() != null && !room.getId().isEmpty());
 
-        Room room1 = this.rc.getGroupInfo(room.getId());
+        Group room1 = this.rc.getGroupInfo(room.getId());
 
         assertTrue("Error, room was null", room1 != null);
         assertEquals("Error, group names were not equal", room1.getName(), roomNameTest);
@@ -137,8 +136,7 @@ public class RocketChatClientTestIT {
     public void testRenameChannel() throws Exception {
         String roomNameTest = TEST_CASE_5;
         Room room = this.rc.createChannel(roomNameTest);
-        assertTrue("Room Id shouldn't be null if the room was created",
-                (room.getId() != null && !room.getId().isEmpty()));
+        assertTrue("Room Id shouldn't be null if the room was created", room.getId() != null && !room.getId().isEmpty());
         assertEquals(TEST_CASE_5, room.getName());
 
         this.rc.renameChannel(room.getId(), TEST_CASE_6);
@@ -150,8 +148,7 @@ public class RocketChatClientTestIT {
     public void testRenameGroup() throws Exception {
         String roomNameTest = TEST_CASE_7;
         Room room = this.rc.createGroup(roomNameTest);
-        assertTrue("Room Id shouldn't be null if the room was created",
-                (room.getId() != null && !room.getId().isEmpty()));
+        assertTrue("Room Id shouldn't be null if the room was created", room.getId() != null && !room.getId().isEmpty());
         assertEquals(TEST_CASE_7, room.getName());
 
         this.rc.renameGroup(room.getId(), TEST_CASE_8);

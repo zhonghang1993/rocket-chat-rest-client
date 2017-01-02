@@ -50,7 +50,7 @@ rc.logout();
 
 ### Compiling
 
-The maven build needs [Docker](https://www.docker.com) for integration testing. Please install it for your platform before running
+The maven build needs [Docker](https://www.docker.com) for integration testing. Please install it for your platform before running and also make sure your user has permission to use the docker command (Linux, add your user to the docker group).
 
 ```
 mvn clean install
