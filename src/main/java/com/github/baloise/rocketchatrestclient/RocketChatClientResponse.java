@@ -2,6 +2,8 @@ package com.github.baloise.rocketchatrestclient;
 
 import com.fasterxml.jackson.annotation.JsonGetter;
 import com.fasterxml.jackson.annotation.JsonSetter;
+import com.github.baloise.rocketchatrestclient.model.Channel;
+import com.github.baloise.rocketchatrestclient.model.Group;
 import com.github.baloise.rocketchatrestclient.model.Message;
 import com.github.baloise.rocketchatrestclient.model.Room;
 import com.github.baloise.rocketchatrestclient.model.ServerInfo;
@@ -11,13 +13,17 @@ import com.github.baloise.rocketchatrestclient.model.User;
 //it's just meant to handle the response from the server
 public class RocketChatClientResponse {
     private boolean success;
+    private String error;
     private ServerInfo info;
     private Message[] messages;
     private Message message;
     private User[] users;
     private User user;
-    private Room[] channels, ims, groups;
-    private Room channel, group;
+    private Channel[] channels;
+    private Channel channel;
+    private Room[] ims;
+    private Group[] groups;
+    private Group group;
 
     public void setSuccess(boolean result) {
         this.success = result;
@@ -26,17 +32,29 @@ public class RocketChatClientResponse {
     public boolean isSuccessful() {
         return this.success;
     }
-    
+
+    public void setError(String error) {
+        this.error = error;
+    }
+
+    public String getError() {
+        return this.error;
+    }
+
+    public boolean hasAnError() {
+        return !this.error.isEmpty();
+    }
+
     @JsonSetter("info")
     public void setServerInfo(ServerInfo info) {
         this.info = info;
     }
-    
+
     @JsonGetter("info")
     public ServerInfo getServerInfo() {
         return this.info;
     }
-    
+
     public boolean hasServerInfo() {
         return this.info != null;
     }
@@ -88,65 +106,65 @@ public class RocketChatClientResponse {
     public boolean hasUser() {
         return this.user != null;
     }
-    
-    public void setChannels(Room[] channels) {
+
+    public void setChannels(Channel[] channels) {
         this.channels = channels;
     }
-    
-    public Room[] getChannels() {
+
+    public Channel[] getChannels() {
         return this.channels;
     }
-    
+
     public boolean hasChannels() {
         return this.channels != null;
     }
-    
-    public void setChannel(Room channel) {
+
+    public void setChannel(Channel channel) {
         this.channel = channel;
     }
-    
-    public Room getChannel() {
+
+    public Channel getChannel() {
         return this.channel;
     }
-    
+
     public boolean hasChannel() {
         return this.channel != null;
     }
-    
-    public void setGroups(Room[] groups) {
+
+    public void setGroups(Group[] groups) {
         this.groups = groups;
     }
-    
-    public Room[] getGroups() {
+
+    public Group[] getGroups() {
         return this.groups;
     }
-    
+
     public boolean hasGroups() {
         return this.groups != null;
     }
-    
-    public void setGroup(Room group) {
+
+    public void setGroup(Group group) {
         this.group = group;
     }
-    
-    public Room getGroup() {
+
+    public Group getGroup() {
         return this.group;
     }
-    
+
     public boolean hasGroup() {
         return this.group != null;
     }
-    
+
     @JsonSetter("ims")
     public void setDirectMessages(Room[] dms) {
         this.ims = dms;
     }
-    
+
     @JsonGetter("ims")
     public Room[] getDirectMessages() {
         return this.ims;
     }
-    
+
     public boolean hasDirectMessages() {
         return this.ims != null;
     }

@@ -12,7 +12,17 @@ public class Room extends Identified {
     private String[] usernames;
     private int msgCount;
     private Date created, updated;
-    private boolean readOnly, sysMsgs;
+    private boolean readOnly, sysMsgs, archived;
+
+    public Room() { }
+
+    public Room(String roomInfo, boolean isName) {
+        if (isName) {
+            this.setName(roomInfo);
+        } else {
+            this.setId(roomInfo);
+        }
+    }
 
     public void setName(String name) {
         this.name = name;
@@ -20,6 +30,14 @@ public class Room extends Identified {
 
     public String getName() {
         return this.name;
+    }
+
+    public void setRoomId(String id) {
+        this.setId(id);
+    }
+
+    public String getRoomId() {
+        return this.getId();
     }
 
     @JsonSetter("t")
@@ -94,6 +112,15 @@ public class Room extends Identified {
     @JsonGetter("_updatedAt")
     public Date getUpdatedDate() {
         return this.updated;
+    }
+    
+    public void setArchived(boolean archived) {
+        this.archived = archived;
+    }
+    
+    @JsonGetter("archived")
+    public boolean isArchived() {
+        return this.archived;
     }
 
     @JsonSetter("ro")
