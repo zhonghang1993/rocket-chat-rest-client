@@ -35,18 +35,18 @@ rc.logout();
 ### Maven
 ```xml
 <repositories>
-	<repository>
-		<id>jitpack.io</id>
-		 <url>https://jitpack.io</url>
-	</repository>
+    <repository>
+        <id>repo-snapshots</id>
+        <url>https://repo.craftyn.com/repository/snapshots/</url>
+    </repository>
 </repositories>
-	
+
 <dependencies>
-	<dependency>
-		<groupId>com.github.baloise</groupId>
-		<artifactId>rocket-chat-rest-client</artifactId>
-		<version>0.1.0-SNAPSHOT</version>
-	</dependency>
+    <dependency>
+        <groupId>com.github.baloise</groupId>
+        <artifactId>rocket-chat-rest-client</artifactId>
+        <version>0.1.2-SNAPSHOT</version>
+    </dependency>
 </dependencies>
 ```
 
