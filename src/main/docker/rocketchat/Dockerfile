@@ -24,7 +24,7 @@ WORKDIR /app/bundle
 ENV MONGO_URL=mongodb://mongo:27017/rocketchat \
     HOME=/tmp \
     PORT=3000 \
-    ROOT_URL=http://localhost:80 \
+    ROOT_URL=http://localhost:23737 \
     Accounts_AvatarStorePath=/app/uploads \
     Log_Level=2 \
     ADMIN_USERNAME=admin \

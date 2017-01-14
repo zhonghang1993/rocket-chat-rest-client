@@ -10,6 +10,7 @@
 		<maven.compiler.target>1.7</maven.compiler.target>
 		<jackson.version>2.7.0</jackson.version>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 	</properties>
 
 	<dependencies>
@@ -68,12 +69,12 @@
 										</links>
 										<wait>
 											<http>
-												<url>http://localhost:80</url>
+												<url>http://localhost:23737</url>
 											</http>
 											<time>60000</time>
 										</wait>
 										<ports>
-											<port>80:3000</port>
+											<port>23737:3000</port>
 										</ports>
 									</run>
 
@@ -88,7 +89,6 @@
 										</wait>
 									</run>
 								</image>
-
 							</images>
 						</configuration>
 					</execution>
@@ -118,4 +118,17 @@
 			</plugin>
 		</plugins>
 	</build>
+
+	<distributionManagement>
+		<repository>
+			<id>repo-release</id>
+			<name>Craftyn Releases</name>
+			<url>https://repo.craftyn.com/repository/internal/</url>
+		</repository>
+		<snapshotRepository>
+			<id>repo-snapshot</id>
+			<name>Craftyn Snapshots</name>
+			<url>https://repo.craftyn.com/repository/snapshots/</url>
+		</snapshotRepository>
+	</distributionManagement>
 </project>

@@ -31,7 +31,7 @@ public class RocketChatClientTestIT {
     private static final String TEST_CASE_1234 = "test1234";
     private static final String TEST_CASE_0 = "test0000";
 
-    String serverUrl = "http://localhost/api/";
+    String serverUrl = "http://localhost:23737/api/";
     String user = "admin";
     String password = "supersecret";
     RocketChatClient rc;
