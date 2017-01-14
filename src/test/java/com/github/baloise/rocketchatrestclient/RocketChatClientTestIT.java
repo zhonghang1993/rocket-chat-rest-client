@@ -4,6 +4,7 @@ import static org.junit.Assert.*;
 
 import org.junit.After;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import com.github.baloise.rocketchatrestclient.model.Channel;
@@ -19,6 +20,7 @@ import com.github.baloise.rocketchatrestclient.model.User;
  * @since 0.1.1
  * @version 0.0.1
  */
+@Ignore
 public class RocketChatClientTestIT {
     private static final String TEST_CASE_8 = "test0008";
     private static final String TEST_CASE_7 = "test0007";
@@ -64,17 +66,16 @@ public class RocketChatClientTestIT {
     @Test
     public void testCreateCloseAndOpenChannel() throws Exception {
         String roomNameTest = TEST_CASE_0;
-        Room room = this.rc.createChannel(roomNameTest);
-        assertTrue("Room Id shouldn't be null if the room was created",
-                room.getId() != null && !room.getId().isEmpty());
+        Channel channel = this.rc.getChannelsApi().create(new Channel(roomNameTest));
+        assertTrue("Room Id shouldn't be null if the room was created", channel.getId() != null && !channel.getId().isEmpty());
 
-        this.rc.closeChannel(room.getId());
-        this.rc.openChannel(room.getId());
+        this.rc.getChannelsApi().close(channel);
+        this.rc.getChannelsApi().open(channel);
     }
 
     @Test
     public void testCreateChannel() throws Exception {
-        Room room = this.rc.createChannel(TEST_CASE_1234);
+        Room room = this.rc.getChannelsApi().create(new Channel(TEST_CASE_1234));
         assertTrue("Room Id shouldn't be null if the room was created",
                 room.getId() != null && !room.getId().isEmpty());
         assertTrue("Room name wasn't created with the provided name.", room.getName().equals(TEST_CASE_1234));
@@ -83,15 +84,15 @@ public class RocketChatClientTestIT {
     @Test
     public void testCreateArchiveAndUnarchiveChannel() throws Exception {
         String roomNameTest = TEST_CASE_1;
-        Channel room = this.rc.createChannel(roomNameTest);
+        Channel room = this.rc.getChannelsApi().create(new Channel(roomNameTest));
         assertTrue("Room Id shouldn't be null if the room was created", (room.getId() != null && !room.getId().isEmpty()));
 
-        this.rc.archiveChannel(room);
-        room = this.rc.getChannelInfo(room);
+        this.rc.getChannelsApi().archive(room);
+        room = this.rc.getChannelsApi().info(room);
         assertTrue("The channel should be archived, but it wasn't.", room.isArchived());
 
-        this.rc.unarchiveChannel(room);
-        room = this.rc.getChannelInfo(room);
+        this.rc.getChannelsApi().unarchiveChannel(room);
+        room = this.rc.getChannelsApi().info(room);
         assertFalse("The channel shouldn't be archived, but it is.", room.isArchived());
     }
 
@@ -135,13 +136,14 @@ public class RocketChatClientTestIT {
     @Test
     public void testRenameChannel() throws Exception {
         String roomNameTest = TEST_CASE_5;
-        Room room = this.rc.createChannel(roomNameTest);
-        assertTrue("Room Id shouldn't be null if the room was created", room.getId() != null && !room.getId().isEmpty());
-        assertEquals(TEST_CASE_5, room.getName());
+        Channel channel = this.rc.getChannelsApi().create(new Channel(roomNameTest));
+        assertTrue("Room Id shouldn't be null if the room was created", channel.getId() != null && !channel.getId().isEmpty());
+        assertEquals(TEST_CASE_5, channel.getName());
+        
+        channel.setName(TEST_CASE_6);
 
-        this.rc.renameChannel(room.getId(), TEST_CASE_6);
-        room = this.rc.getChannelInfo(room.getId());
-        assertEquals(TEST_CASE_6, room.getName());
+        channel = this.rc.getChannelsApi().rename(channel);
+        assertEquals(TEST_CASE_6, channel.getName());
     }
 
     @Test

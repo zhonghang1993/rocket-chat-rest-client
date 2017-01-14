@@ -10,24 +10,27 @@ import com.github.baloise.rocketchatrestclient.util.HttpMethods;
  * @version 0.0.1
  */
 public enum RocketChatRestApiV1 {
-    /** Retrieves a <strong>public</strong> channel's information. */
-    ChannelsInfo("channels.info", HttpMethods.GET, true),
-    /** Retrieves a list of all the <strong>public</strong> channels. */
-    ChannelsList("channels.list", HttpMethods.GET, true),
+    /** Adds <strong>all</strong> users to the specified channel. */
+    ChannelsAddAll("channels.addAll", HttpMethods.POST, true),
+    ChannelsAddModerator("channels.addModerator", HttpMethods.POST, true),
+    ChannelsAddOwner("channels.addOwner", HttpMethods.POST, true),
+    /** Archives a channel. */
+    ChannelsArchive("channels.archive", HttpMethods.POST, true),
+    /** Cleans up a channel (removing messages) */
+    ChannelsCleanHistory("channels.cleanHistory", HttpMethods.POST, true),
+    /** Closes a channel. */
+    ChannelsClose("channels.close", HttpMethods.POST, true),
     /** Creates a new <strong>public</strong> channel. */
     ChannelsCreate("channels.create", HttpMethods.POST, true),
     /** Deletes the <strong>public</strong> channel from the server. */
     ChannelsDelete("channels.delete", HttpMethods.POST, true),
-    /** Adds <strong>all</strong> users to the specified channel. */
-    ChannelsAddAll("channels.addAll", HttpMethods.POST, true),
-    /** Archives a channel. */
-    ChannelsArchive("channels.archive", HttpMethods.POST, true),
+    ChannelsGetIntegrations("channels.getIntegrations", HttpMethods.GET, true),
+    /** Retrieves a <strong>public</strong> channel's information. */
+    ChannelsInfo("channels.info", HttpMethods.GET, true),
+    /** Retrieves a list of all the <strong>public</strong> channels. */
+    ChannelsList("channels.list", HttpMethods.GET, true),
     /** Unarchives a channel. */
     ChannelsUnarchive("channels.unarchive", HttpMethods.POST, true),
-    /** Closes a channel. */
-    ChannelsClose("channels.close", HttpMethods.POST, true),
-    /** Cleans up a channel (removing messages) */
-    ChannelsCleanHistory("channels.cleanHistory", HttpMethods.POST, true),
     /** Invites a user to join a channel **/
     ChannelsInvite("channels.invite", HttpMethods.POST, true),
     /** Removes a user from the channel **/

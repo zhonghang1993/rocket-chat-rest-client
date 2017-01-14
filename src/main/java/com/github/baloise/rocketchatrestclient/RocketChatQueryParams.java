@@ -46,6 +46,54 @@ public class RocketChatQueryParams {
     public Map<? extends String, ? extends String> get() {
         return this.queryParams;
     }
+    
+    /**
+     * Sets the count parameter.
+     * 
+     * @param count the number of items to get
+     * @return the instance of the {@link RocketChatQueryParams}
+     */
+    public RocketChatQueryParams setCount(int count) {
+        this.queryParams.put("count", String.valueOf(count));
+        return this;
+    }
+    
+    /**
+     * Gets the "count" query param, which is special as it needs to be an integer.
+     * 
+     * @return The count otherwise the Integer.MIN_VALUE if it isn't defined.
+     */
+    public int getCount() {
+        if (this.queryParams.containsKey("count")) {
+            return Integer.parseInt(this.queryParams.get("count"));
+        } else {
+            return Integer.MIN_VALUE;
+        }
+    }
+    
+    /**
+     * Sets the offset parameter.
+     * 
+     * @param count the amount of items to offset the getting from
+     * @return the instance of the {@link RocketChatQueryParams}
+     */
+    public RocketChatQueryParams setOffset(int offset) {
+        this.queryParams.put("offset", String.valueOf(offset));
+        return this;
+    }
+    
+    /**
+     * Gets the "offset" query param, which is special as it needs to be an integer.
+     * 
+     * @return The count otherwise the Integer.MIN_VALUE if it isn't defined.
+     */
+    public int getOffset() {
+        if (this.queryParams.containsKey("offset")) {
+            return Integer.parseInt(this.queryParams.get("offset"));
+        } else {
+            return Integer.MIN_VALUE;
+        }
+    }
 
     /**
      * Adds a query parameter to the list.

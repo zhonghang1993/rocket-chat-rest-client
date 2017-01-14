@@ -68,6 +68,14 @@ public class Message extends Identified {
         return this.emoji;
     }
 
+    public void setAvatar(String avatar) {
+        this.avatar = avatar;
+    }
+
+    public String getAvatar() {
+        return this.avatar;
+    }
+
     public void setAttachments(Attachment[] attachments) {
         this.attachments = (ArrayList<Attachment>) Arrays.asList(attachments);
     }
