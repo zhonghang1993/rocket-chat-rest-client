@@ -11,26 +11,8 @@ Lightweight Java client for [Rocket.Chat](https://rocket.chat/)'s [REST API](htt
 * The method calls are sync and blocking
 * Maven is configured to startup Rocket.Chat v.0.48-develop via docker therefore docker must be installed.
 
-### Java
-```java
-RocketChatClient rc = new RocketChatClient("https://demo.rocket.chat/api/", "<user>", "<password>");
-
-// get meta info
-System.out.println("Rocket.Chat Server Version is: " + info.getServerInformation().getVersion());
-		
-// use typed API to retrieve rooms		
-Room[] channels = rc.getChannels();
-for (Room c : channels) {
-	System.out.println(String.format("name: %s, id: %s", c.getName(), c.getId()));
-}
-
-//NOTE: Sending a message isn't supported yet, due to inconsistencies that `v1/chat.postMessage` has versus other `v1/` APIs. 
-// send a message to a room. Room ID is resolved automatically
-rc.send("test", "Hello from REST client" + new Date());
-
-// Call this if you are done or want to refresh the auth token
-rc.logout();
-```
+### JavaDoc
+The JavaDoc is generated per build: https://ci.craftyn.com/job/rocket-chat-rest-client/javadoc/
 
 ### Maven
 ```xml
