@@ -31,10 +31,10 @@ public class RocketChatClientTestIT {
     private static final String TEST_CASE_1234 = "test1234";
     private static final String TEST_CASE_0 = "test0000";
 
-    String serverUrl = "http://localhost:23737/api/";
-    String user = "admin";
-    String password = "supersecret";
-    RocketChatClient rc;
+    private String serverUrl = "http://localhost:23737/api/";
+    private String user = "admin";
+    private String password = "supersecret";
+    private RocketChatClient rc;
 
     @Before
     public void setUp() {
@@ -55,7 +55,7 @@ public class RocketChatClientTestIT {
     public void testRocketCatExists() throws Exception {
 
         ServerInfo info = this.rc.getServerInformation();
-        assertTrue("The Rocket.Chat Version is empty, when it shouldn't be.", !info.getVersion().isEmpty());
+        assertFalse("The Rocket.Chat Version is empty, when it shouldn't be.", info.getVersion().isEmpty());
 
         User rocketCat = this.rc.getUser("rocket.cat");
         assertTrue("The Rocket.Cat user's id doesn't match what it should be.", "rocket.cat".equals(rocketCat.getId()));
