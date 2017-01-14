@@ -13,11 +13,11 @@ import com.github.baloise.rocketchatrestclient.requests.RoomAndUserRequest;
 public class RocketChatRestApiV1Channels {
     private static final String ROOM_ID_PARAM_KEY = "roomId";
     private RocketChatClientCallBuilder callBuilder;
-    
+
     protected RocketChatRestApiV1Channels(RocketChatClientCallBuilder callBuilder) {
         this.callBuilder = callBuilder;
     }
-    
+
     /**
      * Adds <strong>all</strong> of the users of the Rocket.Chat server to the
      * channel.
@@ -55,21 +55,21 @@ public class RocketChatRestApiV1Channels {
 
         return res.getChannel();
     }
-    
+
     public void addModerator(Channel channel, User user) throws IOException {
         RocketChatClientResponse res = this.callBuilder.buildCall(RocketChatRestApiV1.ChannelsAddModerator, null, new RoomAndUserRequest(channel.getId(), user.getId()));
 
         if (!res.isSuccessful())
             throw new IOException("The call to add a moderator was unsuccessful: \"" + res.getError() + "\"");
     }
-    
+
     public void addOwner(Channel channel, User user) throws IOException {
         RocketChatClientResponse res = this.callBuilder.buildCall(RocketChatRestApiV1.ChannelsAddOwner, null, new RoomAndUserRequest(channel.getId(), user.getId()));
 
         if (!res.isSuccessful())
             throw new IOException("The call tomessageReturn.channel add an owner was unsuccessful: \"" + res.getError() + "\"");
     }
-    
+
     /**
      * Archives the channel
      *
@@ -85,17 +85,19 @@ public class RocketChatRestApiV1Channels {
         if (!res.isSuccessful())
             throw new IOException("The call to archive the Channel was unsuccessful: \"" + res.getError() + "\"");
     }
-    
+
     /**
      * Cleans up a channel, removing messages from the provided time range.
      *
-     * @param channelId  the "_id" of the room to clean the history of
-     * @param latest end date of time range of messages to
-     *            clean
-     * @param oldest start date of time range of messages to
-     *            clean
-     * @param inclusive whether messages which land on
-     *            latest and oldest should be included
+     * @param channel
+     *            the {@link Channel} of the room to clean the history of
+     * @param latest
+     *            end date of time range of messages to clean
+     * @param oldest
+     *            start date of time range of messages to clean
+     * @param inclusive
+     *            whether messages which land on latest and oldest should be
+     *            included
      * @throws IOException
      *             is thrown if there was a problem connecting, including if the
      *             result wasn't successful
@@ -128,13 +130,13 @@ public class RocketChatRestApiV1Channels {
         if (!res.isSuccessful())
             throw new IOException("The call to clean the Channel was unsuccessful: \"" + res.getError() + "\"");
     }
-    
+
     /**
      * Closes a channel, which hides it from the user's active list inside
      * Rocket.Chat
      *
-     * @param channelId
-     *            the "_id" of the room to close
+     * @param channel
+     *            the {@link Channel} of the room to close
      * @throws IOException
      *             is thrown if there was a problem connecting, including if the
      *             result wasn't successful
@@ -150,7 +152,8 @@ public class RocketChatRestApiV1Channels {
      * Creates a new channel with any of the members added in the channel
      * defined.
      *
-     * @param channel the {@link Channel} to create
+     * @param channel
+     *            the {@link Channel} to create
      * @return the newly created {@link Channel}
      * @throws IOException
      *             is thrown if there was a problem connecting, including if the
@@ -171,7 +174,8 @@ public class RocketChatRestApiV1Channels {
     /**
      * Deletes the channel.
      *
-     * @param channel the {@link Channel} to delete
+     * @param channel
+     *            the {@link Channel} to delete
      * @return the deleted {@link Channel}
      * @throws IOException
      *             is thrown if there was a problem connecting, including if the
@@ -188,16 +192,16 @@ public class RocketChatRestApiV1Channels {
 
         return res.getChannel();
     }
-    
+
     public Integration[] getIntegrations(Channel channel) throws IOException {
         RocketChatClientResponse res = this.callBuilder.buildCall(RocketChatRestApiV1.ChannelsGetIntegrations, new RocketChatQueryParams(ROOM_ID_PARAM_KEY, channel.getId()));
-        
+
         if (!res.isSuccessful())
             throw new IOException("The call to get the Channel's Integrations was unsuccessful: \"" + res.getError() + "\"");
-        
+
         if (!res.hasIntegrations())
             throw new IOException("The respone does no contain any integrations information.");
-        
+
         return res.getIntegrations();
     }
 
@@ -236,12 +240,14 @@ public class RocketChatRestApiV1Channels {
 
         return res.getChannel();
     }
-    
+
     /**
      * Invites a user to a channel
      *
-     * @param channel the {@link Channel} where the invite is coming from
-     * @param user the {@link User} who is being invited
+     * @param channel
+     *            the {@link Channel} where the invite is coming from
+     * @param user
+     *            the {@link User} who is being invited
      * @return the {@link Channel} with new members array
      * @throws IOException
      *             is thrown if there was a problem connecting, including if the
@@ -252,22 +258,24 @@ public class RocketChatRestApiV1Channels {
 
         if (!res.isSuccessful())
             throw new IOException("The call to invite a User to a Channel was unsuccessful: \"" + res.getError() + "\"");
-        
+
         if (!res.hasChannel())
             throw new IOException("The call to invite a User to a Channel failed to return the channel data.");
 
         return res.getChannel();
     }
-    
-    public Channel join(Channel channel /*, String joinCode*/) throws IOException {
+
+    public Channel join(Channel channel /* , String joinCode */) throws IOException {
         throw new IOException("Not implemented.");
     }
-    
+
     /**
      * Removes a user from a channel
      *
-     * @param channel the {@link Channel} where the kick is happening at
-     * @param user the {@link User} who is being kicked
+     * @param channel
+     *            the {@link Channel} where the kick is happening at
+     * @param user
+     *            the {@link User} who is being kicked
      * @return the {@link Channel} with new members array
      * @throws IOException
      *             is thrown if there was a problem connecting, including if the
@@ -278,18 +286,19 @@ public class RocketChatRestApiV1Channels {
 
         if (!res.isSuccessful())
             throw new IOException("The call to remove a User from a Channel was unsuccessful: \"" + res.getError() + "\"");
-        
+
         if (!res.hasChannel())
             throw new IOException("The call to kick a User from a Channel failed to return the channel data.");
 
         return res.getChannel();
     }
-    
+
     /**
      * Removes the callee from a channel
      *
-     * @param channelId
-     *            the "_id" of the room to leave
+     * @param channel
+     *            the {@link Channel} of the room to leave
+     * @return the {@link Channel} with the new information
      * @throws IOException
      *             is thrown if there was a problem connecting, including if the
      *             result wasn't successful
@@ -299,13 +308,13 @@ public class RocketChatRestApiV1Channels {
 
         if (!res.isSuccessful())
             throw new IOException("The call to leave a Channel was unsuccessful: \"" + res.getError() + "\"");
-        
+
         if (!res.hasChannel())
             throw new IOException("The call to leave a Channel failed to return the channel data.");
 
         return res.getChannel();
     }
-    
+
     /**
      * Gets the first number of the public channels from the Rocket.Chat server,
      * the amount depends on what the server has configured to return as the
@@ -319,11 +328,13 @@ public class RocketChatRestApiV1Channels {
     public Channel[] list() throws IOException {
         return this.list(new RocketChatQueryParams());
     }
-    
+
     /**
-     * Gets the public channels from the Rocket.Chat server, depending on the query params provided otherwise uses the server's defaults.
+     * Gets the public channels from the Rocket.Chat server, depending on the
+     * query params provided otherwise uses the server's defaults.
      *
-     * @param params an {@link RocketChatQueryParams} instance
+     * @param params
+     *            an {@link RocketChatQueryParams} instance
      * @return an array of {@link Channel}s
      * @throws IOException
      *             is thrown if there was a problem connecting, including if the
@@ -340,16 +351,17 @@ public class RocketChatRestApiV1Channels {
 
         return res.getChannels();
     }
-    
+
     public Channel[] listJoined(RocketChatQueryParams params) throws IOException {
         throw new IOException("list.joined not implemented yet.");
     }
-    
+
     /**
      * Opens a channel, which makes it visible again in the user's active list
      * inside Rocket.Chat
      *
-     * @param channel the {@link Channel} to open
+     * @param channel
+     *            the {@link Channel} to open
      * @throws IOException
      *             is thrown if there was a problem connecting, including if the
      *             result wasn't successful
@@ -360,19 +372,20 @@ public class RocketChatRestApiV1Channels {
         if (!res.isSuccessful())
             throw new IOException("The call to open the Channel was unsuccessful: \"" + res.getError() + "\"");
     }
-    
+
     public void removeModerator(Channel channel, User user) throws IOException {
         throw new IOException("Not Implemented.");
     }
-    
+
     public void removeOwner(Channel channel, User user) throws IOException {
         throw new IOException("Not Implemented.");
     }
-    
+
     /**
      * Renames the channel
      *
-     * @param channel the {@link Channel} with the new name to rename the channel.
+     * @param channel
+     *            the {@link Channel} with the new name to rename the channel.
      * @return the new {@link Channel} information
      * @throws IOException
      *             is thrown if there was a problem connecting, including if the
@@ -383,33 +396,33 @@ public class RocketChatRestApiV1Channels {
 
         if (!res.isSuccessful())
             throw new IOException("The call to rename a Channel was unsuccessful: \"" + res.getError() + "\"");
-        
+
         if (!res.hasChannel())
             throw new IOException("The call to leave a Channel failed to return the channel data.");
 
         return res.getChannel();
     }
-    
+
     public void setDescription(Channel channel) throws IOException {
         throw new IOException("Not Implemented.");
     }
-    
+
     public void setJoinCode(Channel channel) throws IOException {
         throw new IOException("Not Implemented.");
     }
-    
+
     public void setPurpose(Channel channel) throws IOException {
         throw new IOException("Not Implemented.");
     }
-    
+
     public void setReadOnly(Channel channel) throws IOException {
         throw new IOException("Not Implemented.");
     }
-    
+
     public void setTopic(Channel channel) throws IOException {
         throw new IOException("Not Implemented.");
     }
-    
+
     public void setType(Channel channel) throws IOException {
         throw new IOException("Not Implemented.");
     }

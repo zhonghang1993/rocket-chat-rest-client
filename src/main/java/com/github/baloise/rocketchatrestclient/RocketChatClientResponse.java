@@ -14,7 +14,7 @@ import com.github.baloise.rocketchatrestclient.model.User;
 //it's just meant to handle the response from the server
 public class RocketChatClientResponse {
     private boolean success;
-    private int count, offset, total;
+//    private int count, offset, total;
     private String error;
     private ServerInfo info;
     private Message[] messages;

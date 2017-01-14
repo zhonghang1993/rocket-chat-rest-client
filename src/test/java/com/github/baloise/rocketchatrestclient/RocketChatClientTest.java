@@ -14,7 +14,7 @@ public class RocketChatClientTest {
     private RocketChatClient rc;
     
     @Before
-    public void setup() {
+    public void setUp() {
         String serverUrl = "https://demo.rocket.chat/api/";
         String user = "";
         String password = "";

@@ -74,7 +74,7 @@ public class RocketChatQueryParams {
     /**
      * Sets the offset parameter.
      * 
-     * @param count the amount of items to offset the getting from
+     * @param offset the amount of items to offset the getting from
      * @return the instance of the {@link RocketChatQueryParams}
      */
     public RocketChatQueryParams setOffset(int offset) {

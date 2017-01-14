@@ -15,5 +15,8 @@ public class RocketChatRestApiV1Chat {
     public void postMessage(Room room, Message message) throws IOException {
         message.setRoomId(room.getId());
         RocketChatClientResponse res = this.callBuilder.buildCall(RocketChatRestApiV1.ChatPostMessage, null, message);
+        
+        if (!res.isSuccessful())
+            throw new IOException("The postMessage was unsuccessful: \"" + res.getError() + "\"");
     }
 }
