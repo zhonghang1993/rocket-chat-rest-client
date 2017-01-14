@@ -4,7 +4,6 @@ import static org.junit.Assert.*;
 
 import org.junit.After;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 
 import com.github.baloise.rocketchatrestclient.model.Channel;
@@ -20,7 +19,6 @@ import com.github.baloise.rocketchatrestclient.model.User;
  * @since 0.1.1
  * @version 0.0.1
  */
-@Ignore
 public class RocketChatClientTestIT {
     private static final String TEST_CASE_8 = "test0008";
     private static final String TEST_CASE_7 = "test0007";

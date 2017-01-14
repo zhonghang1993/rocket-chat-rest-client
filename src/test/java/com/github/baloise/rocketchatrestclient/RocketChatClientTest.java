@@ -4,18 +4,20 @@ import org.junit.Test;
 import static org.junit.Assert.*;
 
 import org.junit.Before;
+import org.junit.Ignore;
 
 import com.github.baloise.rocketchatrestclient.model.ServerInfo;
 import com.github.baloise.rocketchatrestclient.model.User;
 
+@Ignore
 public class RocketChatClientTest {
     private RocketChatClient rc;
     
     @Before
     public void setup() {
-        String serverUrl = "http://localhost:3000/api/";
-        String user = "graywolf336";
-        String password = "graywolf336";
+        String serverUrl = "https://demo.rocket.chat/api/";
+        String user = "";
+        String password = "";
         rc = new RocketChatClient(serverUrl, user, password);
     }
 
