@@ -4,7 +4,7 @@ Lightweight Java client for [Rocket.Chat](https://rocket.chat/)'s [REST API](htt
 [![Build Status](https://ci.craftyn.com/job/rocket-chat-rest-client/badge/icon)](https://ci.craftyn.com/job/rocket-chat-rest-client/) [![Codacy Badge](https://api.codacy.com/project/badge/Grade/a9564ad6e28743bea43b056ef667f328)](https://www.codacy.com/app/graywolf336/rocket-chat-rest-client?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=baloise/rocket-chat-rest-client&amp;utm_campaign=Badge_Grade)
 
 ## Notes
-* Rocket.Chat v0.48 rewrote the REST API, see the [pull request #5140](https://github.com/RocketChat/Rocket.Chat/pull/5140) for details
+* Requires Rocket.Chat v0.49.2 due to massive changes from Rocket.Chat, also v0.48 rewrote the REST API, see the [pull request #5140](https://github.com/RocketChat/Rocket.Chat/pull/5140) for details
 * This api is still a work in progress, feel free to submit pull requests to add functionality
 * Server url doesn't require `api/` anymore, but it can still be provided
 * None of the results are cached, every time a method is called it goes out and gets it

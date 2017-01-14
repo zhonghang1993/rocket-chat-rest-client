@@ -55,7 +55,7 @@ public class Message extends Identified {
     }
 
     public String getEmoji() {
-        return ":" + this.emoji.getAliases().get(0) + ":";
+        return this.emoji == null ? null : ":" + this.emoji.getAliases().get(0) + ":";
     }
 
     @JsonIgnore
@@ -77,7 +77,7 @@ public class Message extends Identified {
     }
 
     public void setAttachments(Attachment[] attachments) {
-        this.attachments = (ArrayList<Attachment>) Arrays.asList(attachments);
+        this.attachments = new ArrayList<Attachment>(Arrays.asList(attachments));
     }
 
     public void addAttachment(Attachment attachment) {

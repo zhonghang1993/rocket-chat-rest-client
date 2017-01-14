@@ -21,6 +21,7 @@ public class RocketChatClient {
 
     private RocketChatClientCallBuilder callBuilder;
     private RocketChatRestApiV1Channels channels;
+    private RocketChatRestApiV1Chat chat;
 
     /**
      * Initialize a new instance of the client providing the server's url along
@@ -37,6 +38,7 @@ public class RocketChatClient {
     public RocketChatClient(String serverUrl, String user, String password) {
         this.callBuilder = new RocketChatClientCallBuilder(serverUrl, user, password);
         this.channels = new RocketChatRestApiV1Channels(this.callBuilder);
+        this.chat = new RocketChatRestApiV1Chat(this.callBuilder);
     }
 
     /**
@@ -73,11 +75,15 @@ public class RocketChatClient {
     public RocketChatRestApiV1Channels getChannelsApi() {
         return this.channels;
     }
-    
+
+    public RocketChatRestApiV1Chat getChatApi() {
+        return this.chat;
+    }
+
     /**
-     * Gets the first number of users from the Rocket.Chat server,
-     * the amount depends on what the server has configured to return as the
-     * default count with the default being 50.
+     * Gets the first number of users from the Rocket.Chat server, the amount
+     * depends on what the server has configured to return as the default count
+     * with the default being 50.
      *
      * @return an array of {@link User}s
      * @throws IOException
@@ -119,10 +125,9 @@ public class RocketChatClient {
     }
 
     /**
-     * Gets the first number of the private groups the calling user has
-     * access to from the Rocket.Chat server, the amount depends on what
-     * the server has configured to return as the default count with
-     * the default being 50.
+     * Gets the first number of the private groups the calling user has access
+     * to from the Rocket.Chat server, the amount depends on what the server has
+     * configured to return as the default count with the default being 50.
      *
      * @return an array of {@link Room}s that are groups
      * @throws IOException
@@ -132,11 +137,13 @@ public class RocketChatClient {
     public Group[] getGroups() throws IOException {
         return this.getGroups(new RocketChatQueryParams());
     }
-    
+
     /**
-     * Gets the private groups from the Rocket.Chat server, depending on the query params provided otherwise uses the server's defaults.
+     * Gets the private groups from the Rocket.Chat server, depending on the
+     * query params provided otherwise uses the server's defaults.
      *
-     * @param params an {@link RocketChatQueryParams} instance
+     * @param params
+     *            an {@link RocketChatQueryParams} instance
      * @return an array of {@link Group}s
      * @throws IOException
      *             is thrown if there was a problem connecting, including if the
