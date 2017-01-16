@@ -32,10 +32,12 @@ public class Message extends Identified {
         return this.roomId;
     }
 
+    @JsonSetter("msg")
     public void setText(String text) {
         this.text = text;
     }
 
+    @JsonGetter("msg")
     public String getText() {
         return this.text;
     }

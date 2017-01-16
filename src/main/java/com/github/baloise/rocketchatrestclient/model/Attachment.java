@@ -9,33 +9,43 @@ public class Attachment {
     private String title, titleLink, titleLinkDownload;
     private String imageUrl, audioUrl, videoUrl;
     private ArrayList<AttachmentField> fields;
-    
+
     public Attachment() {
         this.fields = new ArrayList<AttachmentField>();
     }
-    
-    /**
-     * @return the color
-     */
-    public String getColor() {
-        return color;
+
+    public Attachment(String text) {
+        this.fields = new ArrayList<AttachmentField>();
+        this.text = text;
     }
-    /**
-     * @param color the color to set
-     */
+
+    public Attachment(String title, String text) {
+        this.fields = new ArrayList<AttachmentField>();
+        this.title = title;
+        this.text = text;
+    }
+
     public void setColor(String color) {
         this.color = color;
     }
-    /**
-     * @return the text
-     */
-    public String getText() {
-        return text;
+
+    public String getColor() {
+        return this.color;
     }
-    /**
-     * @param text the text to set
-     */
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public String getTitle() {
+        return this.title;
+    }
+
     public void setText(String text) {
         this.text = text;
+    }
+
+    public String getText() {
+        return this.text;
     }
 }
