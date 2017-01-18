@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonGetter;
 import com.fasterxml.jackson.annotation.JsonSetter;
 import com.github.baloise.rocketchatrestclient.model.Channel;
 import com.github.baloise.rocketchatrestclient.model.Group;
+import com.github.baloise.rocketchatrestclient.model.Integration;
 import com.github.baloise.rocketchatrestclient.model.Message;
 import com.github.baloise.rocketchatrestclient.model.Room;
 import com.github.baloise.rocketchatrestclient.model.ServerInfo;
@@ -13,6 +14,7 @@ import com.github.baloise.rocketchatrestclient.model.User;
 //it's just meant to handle the response from the server
 public class RocketChatClientResponse {
     private boolean success;
+//    private int count, offset, total;
     private String error;
     private ServerInfo info;
     private Message[] messages;
@@ -24,6 +26,8 @@ public class RocketChatClientResponse {
     private Room[] ims;
     private Group[] groups;
     private Group group;
+    private Integration[] integrations;
+    private Integration integration;
 
     public void setSuccess(boolean result) {
         this.success = result;
@@ -167,5 +171,29 @@ public class RocketChatClientResponse {
 
     public boolean hasDirectMessages() {
         return this.ims != null;
+    }
+    
+    public void setIntegrations(Integration[] integrations) {
+        this.integrations = integrations;
+    }
+    
+    public Integration[] getIntegrations() {
+        return this.integrations;
+    }
+    
+    public boolean hasIntegrations() {
+        return this.integrations != null;
+    }
+    
+    public void setIntegration(Integration integration) {
+        this.integration = integration;
+    }
+    
+    public Integration getIntegration() {
+        return this.integration;
+    }
+    
+    public boolean hasIntegration() {
+        return this.integration != null;
     }
 }

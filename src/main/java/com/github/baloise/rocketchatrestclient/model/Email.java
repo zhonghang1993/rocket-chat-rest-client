@@ -41,7 +41,7 @@ public class Email {
     /**
      * Gets whether this email has been verified or not
      *
-     * @return
+     * @return whether this email is verified or not
      */
     public boolean getVerified() {
         return this.verified;

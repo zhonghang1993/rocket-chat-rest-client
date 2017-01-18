@@ -11,6 +11,7 @@ import com.github.baloise.rocketchatrestclient.model.Group;
 import com.github.baloise.rocketchatrestclient.model.Room;
 import com.github.baloise.rocketchatrestclient.model.ServerInfo;
 import com.github.baloise.rocketchatrestclient.model.User;
+import com.github.baloise.rocketchatrestclient.util.TestConnectionInfo;
 
 /**
  * This IT tests basic functionality of the client.
@@ -31,20 +32,17 @@ public class RocketChatClientTestIT {
     private static final String TEST_CASE_1234 = "test1234";
     private static final String TEST_CASE_0 = "test0000";
 
-    String serverUrl = "http://localhost:23737/api/";
-    String user = "admin";
-    String password = "supersecret";
-    RocketChatClient rc;
+    private RocketChatClient rc;
 
     @Before
-    public void beforeTests() {
-        this.rc = new RocketChatClient(this.serverUrl, this.user, this.password);
+    public void setUp() throws Exception {
+        this.rc = new RocketChatClient(TestConnectionInfo.ServerUrl, TestConnectionInfo.User, TestConnectionInfo.Password);
 
         assertNotNull("An error occured setting up Rocket.Chat Client, it is null.", this.rc);
     }
 
     @After
-    public void afterTests() {
+    public void tearDown() throws Exception {
         if (this.rc == null)
             return;
 
@@ -55,104 +53,99 @@ public class RocketChatClientTestIT {
     public void testRocketCatExists() throws Exception {
 
         ServerInfo info = this.rc.getServerInformation();
-        assertTrue("The Rocket.Chat Version is empty, when it shouldn't be.", !info.getVersion().isEmpty());
+        assertFalse("The Rocket.Chat Version is empty, when it shouldn't be.", info.getVersion().isEmpty());
 
-        User rocketCat = this.rc.getUser("rocket.cat");
+        User rocketCat = this.rc.getUsersApi().getInfo("rocket.cat");
         assertTrue("The Rocket.Cat user's id doesn't match what it should be.", "rocket.cat".equals(rocketCat.getId()));
     }
 
     @Test
     public void testCreateCloseAndOpenChannel() throws Exception {
         String roomNameTest = TEST_CASE_0;
-        Room room = this.rc.createChannel(roomNameTest);
-        assertTrue("Room Id shouldn't be null if the room was created",
-                room.getId() != null && !room.getId().isEmpty());
+        Channel channel = this.rc.getChannelsApi().create(new Channel(roomNameTest));
+        assertTrue("Room Id shouldn't be null if the room was created", channel.getId() != null && !channel.getId().isEmpty());
 
-        this.rc.closeChannel(room.getId());
-        this.rc.openChannel(room.getId());
+        this.rc.getChannelsApi().close(channel);
+        this.rc.getChannelsApi().open(channel);
     }
 
     @Test
     public void testCreateChannel() throws Exception {
-        Room room = this.rc.createChannel(TEST_CASE_1234);
-        assertTrue("Room Id shouldn't be null if the room was created",
-                room.getId() != null && !room.getId().isEmpty());
+        Room room = this.rc.getChannelsApi().create(new Channel(TEST_CASE_1234));
+        assertTrue("Room Id shouldn't be null if the room was created", room.getId() != null && !room.getId().isEmpty());
         assertTrue("Room name wasn't created with the provided name.", room.getName().equals(TEST_CASE_1234));
     }
 
     @Test
     public void testCreateArchiveAndUnarchiveChannel() throws Exception {
         String roomNameTest = TEST_CASE_1;
-        Channel room = this.rc.createChannel(roomNameTest);
+        Channel room = this.rc.getChannelsApi().create(new Channel(roomNameTest));
         assertTrue("Room Id shouldn't be null if the room was created", (room.getId() != null && !room.getId().isEmpty()));
 
-        this.rc.archiveChannel(room);
-        room = this.rc.getChannelInfo(room);
+        this.rc.getChannelsApi().archive(room);
+        room = this.rc.getChannelsApi().info(room);
         assertTrue("The channel should be archived, but it wasn't.", room.isArchived());
 
-        this.rc.unarchiveChannel(room);
-        room = this.rc.getChannelInfo(room);
+        this.rc.getChannelsApi().unarchiveChannel(room);
+        room = this.rc.getChannelsApi().info(room);
         assertFalse("The channel shouldn't be archived, but it is.", room.isArchived());
     }
 
     @Test
     public void testCreateCloseAndOpenGroup() throws Exception {
-        String roomNameTest = TEST_CASE_2;
-        Room room = this.rc.createGroup(roomNameTest);
-        assertTrue("Room Id shouldn't be null if the room was created",
-                (room.getId() != null && !room.getId().isEmpty()));
+        Group group = this.rc.getGroupsApi().create(new Group(TEST_CASE_2));
+        assertTrue("Room Id shouldn't be null if the room was created", (group.getId() != null && !group.getId().isEmpty()));
 
-        this.rc.closeGroup(room.getId());
+        this.rc.getGroupsApi().close(group);
     }
 
     @Test
     public void testCreateArchiveAndUnarchiveGroup() throws Exception {
-        String roomNameTest = TEST_CASE_3;
-        Group room = this.rc.createGroup(roomNameTest);
-        assertTrue("Room Id shouldn't be null if the room was created", (room.getId() != null && !room.getId().isEmpty()));
+        Group group = this.rc.getGroupsApi().create(new Group(TEST_CASE_3));
+        assertTrue("Room Id shouldn't be null if the room was created", (group.getId() != null && !group.getId().isEmpty()));
 
-        this.rc.archiveGroup(room);
-        room = this.rc.getGroupInfo(room);
-        assertTrue("The group should be archived, but it wasn't.", room.isArchived());
+        this.rc.getGroupsApi().archive(group);
+        group = this.rc.getGroupsApi().info(group);
+        assertTrue("The group should be archived, but it wasn't.", group.isArchived());
 
-        this.rc.unarchiveGroup(room);
-        room = this.rc.getGroupInfo(room);
-        assertFalse("The group shouldn't be archived, but it is.", room.isArchived());
+         this.rc.getGroupsApi().unarchive(group);
+         group = this.rc.getGroupsApi().info(group);
+         assertFalse("The group shouldn't be archived, but it is.", group.isArchived());
     }
 
     @Test
     public void testCreateAndGetGroup() throws Exception {
-        String roomNameTest = TEST_CASE_4;
-        Group room = this.rc.createGroup(roomNameTest);
+        Group room = this.rc.getGroupsApi().create(new Group(TEST_CASE_4));
         assertTrue("Room Id shouldn't be null if the room was created", room.getId() != null && !room.getId().isEmpty());
 
-        Group room1 = this.rc.getGroupInfo(room.getId());
+        Group room1 = this.rc.getGroupsApi().info(room.getId());
 
         assertTrue("Error, room was null", room1 != null);
-        assertEquals("Error, group names were not equal", room1.getName(), roomNameTest);
+        assertEquals("Error, group names were not equal", room1.getName(), TEST_CASE_4);
     }
 
     @Test
     public void testRenameChannel() throws Exception {
         String roomNameTest = TEST_CASE_5;
-        Room room = this.rc.createChannel(roomNameTest);
-        assertTrue("Room Id shouldn't be null if the room was created", room.getId() != null && !room.getId().isEmpty());
-        assertEquals(TEST_CASE_5, room.getName());
+        Channel channel = this.rc.getChannelsApi().create(new Channel(roomNameTest));
+        assertTrue("Room Id shouldn't be null if the room was created", channel.getId() != null && !channel.getId().isEmpty());
+        assertEquals(TEST_CASE_5, channel.getName());
 
-        this.rc.renameChannel(room.getId(), TEST_CASE_6);
-        room = this.rc.getChannelInfo(room.getId());
-        assertEquals(TEST_CASE_6, room.getName());
+        channel.setName(TEST_CASE_6);
+
+        channel = this.rc.getChannelsApi().rename(channel);
+        assertEquals(TEST_CASE_6, channel.getName());
     }
 
     @Test
     public void testRenameGroup() throws Exception {
-        String roomNameTest = TEST_CASE_7;
-        Room room = this.rc.createGroup(roomNameTest);
-        assertTrue("Room Id shouldn't be null if the room was created", room.getId() != null && !room.getId().isEmpty());
-        assertEquals(TEST_CASE_7, room.getName());
+        Group group = this.rc.getGroupsApi().create(new Group(TEST_CASE_7));
+        assertTrue("Room Id shouldn't be null if the room was created", group.getId() != null && !group.getId().isEmpty());
+        assertEquals(TEST_CASE_7, group.getName());
+        
+        group.setName(TEST_CASE_8);
 
-        this.rc.renameGroup(room.getId(), TEST_CASE_8);
-        room = this.rc.getGroupInfo(room.getId());
-        assertEquals(TEST_CASE_8, room.getName());
+        group = this.rc.getGroupsApi().rename(group);
+        assertEquals(TEST_CASE_8, group.getName());
     }
 }
