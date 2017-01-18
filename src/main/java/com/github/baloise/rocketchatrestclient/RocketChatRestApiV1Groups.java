@@ -14,7 +14,7 @@ public class RocketChatRestApiV1Groups {
     protected RocketChatRestApiV1Groups(RocketChatClientCallBuilder callBuilder) {
         this.callBuilder = callBuilder;
     }
-    
+
     /**
      * Archives a group
      *
@@ -30,7 +30,23 @@ public class RocketChatRestApiV1Groups {
         if (!res.isSuccessful())
             throw new IOException("The call to archive the Group was unsuccessful: \"" + res.getError() + "\"");
     }
-    
+
+    /**
+     * Closes a group
+     *
+     * @param group
+     *            the group to close
+     * @throws IOException
+     *             is thrown if there was a problem connecting, including if the
+     *             result wasn't successful
+     */
+    public void close(Group group) throws IOException {
+        RocketChatClientResponse res = this.callBuilder.buildCall(RocketChatRestApiV1.GroupsClose, null, group);
+
+        if (!res.isSuccessful())
+            throw new IOException("The call to close the Group was unsuccessful: \"" + res.getError() + "\"");
+    }
+
     /**
      * Creates a new private group with any of the members added in the class.
      *
@@ -52,22 +68,7 @@ public class RocketChatRestApiV1Groups {
 
         return res.getGroup();
     }
-    
-    /**
-     * Closes a group
-     *
-     * @param group the group to close
-     * @throws IOException
-     *             is thrown if there was a problem connecting, including if the
-     *             result wasn't successful
-     */
-    public void close(Group group) throws IOException {
-        RocketChatClientResponse res = this.callBuilder.buildCall(RocketChatRestApiV1.GroupsClose, null, group);
 
-        if (!res.isSuccessful())
-            throw new IOException("The call to close the Group was unsuccessful: \"" + res.getError() + "\"");
-    }
-    
     /**
      * Retrieves the information about the group.
      *
@@ -103,12 +104,14 @@ public class RocketChatRestApiV1Groups {
 
         return res.getGroup();
     }
-    
+
     /**
      * Invites a user to a private group
      *
-     * @param group the group to invite user to
-     * @param user the user to invite
+     * @param group
+     *            the group to invite user to
+     * @param user
+     *            the user to invite
      * @throws IOException
      *             is thrown if there was a problem connecting, including if the
      *             result wasn't successful
@@ -119,12 +122,14 @@ public class RocketChatRestApiV1Groups {
         if (!res.isSuccessful())
             throw new IOException("The call to invite a User to a Group was unsuccessful: \"" + res.getError() + "\"");
     }
-    
+
     /**
      * Kicks a user from a private group
      *
-     * @param group the group to remove user from
-     * @param user the user to remove
+     * @param group
+     *            the group to remove user from
+     * @param user
+     *            the user to remove
      * @throws IOException
      *             is thrown if there was a problem connecting, including if the
      *             result wasn't successful
@@ -135,11 +140,12 @@ public class RocketChatRestApiV1Groups {
         if (!res.isSuccessful())
             throw new IOException("The call to remove a User from a Group was unsuccessful: \"" + res.getError() + "\"");
     }
-    
+
     /**
      * Removes the callee from a group
      *
-     * @param group the group to leave
+     * @param group
+     *            the group to leave
      * @throws IOException
      *             is thrown if there was a problem connecting, including if the
      *             result wasn't successful
@@ -150,7 +156,7 @@ public class RocketChatRestApiV1Groups {
         if (!res.isSuccessful())
             throw new IOException("The call to leave a Group was unsuccessful: \"" + res.getError() + "\"");
     }
-    
+
     /**
      * Gets the first number of the private groups the calling user has access
      * to from the Rocket.Chat server, the amount depends on what the server has
@@ -191,7 +197,8 @@ public class RocketChatRestApiV1Groups {
     /**
      * Opens a group
      *
-     * @param group the group to open
+     * @param group
+     *            the group to open
      * @throws IOException
      *             is thrown if there was a problem connecting, including if the
      *             result wasn't successful
@@ -206,7 +213,8 @@ public class RocketChatRestApiV1Groups {
     /**
      * Renames the group
      *
-     * @param group the group to rename
+     * @param group
+     *            the group to rename
      * @return the newly renamed group
      * @throws IOException
      *             is thrown if there was a problem connecting, including if the
@@ -217,13 +225,13 @@ public class RocketChatRestApiV1Groups {
 
         if (!res.isSuccessful())
             throw new IOException("The call to rename a Group was unsuccessful: \"" + res.getError() + "\"");
-        
+
         if (!res.hasGroup())
             throw new IOException("The call to rename a Group failed to return the group data.");
 
         return res.getGroup();
     }
-    
+
     /**
      * Unarchives a group
      *

@@ -22,21 +22,6 @@ public class RocketChatRestApiV1Channels {
      * Adds <strong>all</strong> of the users of the Rocket.Chat server to the
      * channel.
      *
-     * @param channelId
-     *            the "_id" of the room to add all users to
-     * @return {@link Room} which is the channel
-     * @throws IOException
-     *             is thrown if there was a problem connecting, including if the
-     *             result wasn't successful
-     */
-    public Channel addAllUsers(String channelId) throws IOException {
-        return this.addAllUsers(new Channel(channelId, ""));
-    }
-
-    /**
-     * Adds <strong>all</strong> of the users of the Rocket.Chat server to the
-     * channel.
-     *
      * @param channel
      *            the channel of the room to add all users to
      * @return {@link Room} which is the channel
