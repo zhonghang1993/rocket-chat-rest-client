@@ -55,7 +55,7 @@ public class RocketChatClientTestIT {
         ServerInfo info = this.rc.getServerInformation();
         assertFalse("The Rocket.Chat Version is empty, when it shouldn't be.", info.getVersion().isEmpty());
 
-        User rocketCat = this.rc.getUser("rocket.cat");
+        User rocketCat = this.rc.getUsersApi().getInfo("rocket.cat");
         assertTrue("The Rocket.Cat user's id doesn't match what it should be.", "rocket.cat".equals(rocketCat.getId()));
     }
 
@@ -93,40 +93,35 @@ public class RocketChatClientTestIT {
 
     @Test
     public void testCreateCloseAndOpenGroup() throws Exception {
-        String roomNameTest = TEST_CASE_2;
-        Room room = this.rc.createGroup(roomNameTest);
-        assertTrue("Room Id shouldn't be null if the room was created", (room.getId() != null && !room.getId().isEmpty()));
+        Group group = this.rc.getGroupsApi().create(new Group(TEST_CASE_2));
+        assertTrue("Room Id shouldn't be null if the room was created", (group.getId() != null && !group.getId().isEmpty()));
 
-        this.rc.closeGroup(room.getId());
+        this.rc.getGroupsApi().close(group);
     }
 
     @Test
     public void testCreateArchiveAndUnarchiveGroup() throws Exception {
-        String roomNameTest = TEST_CASE_3;
-        Group room = this.rc.createGroup(roomNameTest);
-        assertTrue("Room Id shouldn't be null if the room was created", (room.getId() != null && !room.getId().isEmpty()));
+        Group group = this.rc.getGroupsApi().create(new Group(TEST_CASE_3));
+        assertTrue("Room Id shouldn't be null if the room was created", (group.getId() != null && !group.getId().isEmpty()));
 
-        this.rc.archiveGroup(room);
-        room = this.rc.getGroupInfo(room);
-        assertTrue("The group should be archived, but it wasn't.", room.isArchived());
+        this.rc.getGroupsApi().archive(group);
+        group = this.rc.getGroupsApi().info(group);
+        assertTrue("The group should be archived, but it wasn't.", group.isArchived());
 
-        // Due to a bug in Rocket.Chat 0.49 this is now broke.
-        // this.rc.unarchiveGroup(room);
-        // room = this.rc.getGroupInfo(room);
-        // assertFalse("The group shouldn't be archived, but it is.",
-        // room.isArchived());
+         this.rc.getGroupsApi().unarchive(group);
+         group = this.rc.getGroupsApi().info(group);
+         assertFalse("The group shouldn't be archived, but it is.", group.isArchived());
     }
 
     @Test
     public void testCreateAndGetGroup() throws Exception {
-        String roomNameTest = TEST_CASE_4;
-        Group room = this.rc.createGroup(roomNameTest);
+        Group room = this.rc.getGroupsApi().create(new Group(TEST_CASE_4));
         assertTrue("Room Id shouldn't be null if the room was created", room.getId() != null && !room.getId().isEmpty());
 
-        Group room1 = this.rc.getGroupInfo(room.getId());
+        Group room1 = this.rc.getGroupsApi().info(room.getId());
 
         assertTrue("Error, room was null", room1 != null);
-        assertEquals("Error, group names were not equal", room1.getName(), roomNameTest);
+        assertEquals("Error, group names were not equal", room1.getName(), TEST_CASE_4);
     }
 
     @Test
@@ -144,13 +139,13 @@ public class RocketChatClientTestIT {
 
     @Test
     public void testRenameGroup() throws Exception {
-        String roomNameTest = TEST_CASE_7;
-        Room room = this.rc.createGroup(roomNameTest);
-        assertTrue("Room Id shouldn't be null if the room was created", room.getId() != null && !room.getId().isEmpty());
-        assertEquals(TEST_CASE_7, room.getName());
+        Group group = this.rc.getGroupsApi().create(new Group(TEST_CASE_7));
+        assertTrue("Room Id shouldn't be null if the room was created", group.getId() != null && !group.getId().isEmpty());
+        assertEquals(TEST_CASE_7, group.getName());
+        
+        group.setName(TEST_CASE_8);
 
-        this.rc.renameGroup(room.getId(), TEST_CASE_8);
-        room = this.rc.getGroupInfo(room.getId());
-        assertEquals(TEST_CASE_8, room.getName());
+        group = this.rc.getGroupsApi().rename(group);
+        assertEquals(TEST_CASE_8, group.getName());
     }
 }

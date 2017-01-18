@@ -398,7 +398,7 @@ public class RocketChatRestApiV1Channels {
             throw new IOException("The call to rename a Channel was unsuccessful: \"" + res.getError() + "\"");
 
         if (!res.hasChannel())
-            throw new IOException("The call to leave a Channel failed to return the channel data.");
+            throw new IOException("The call to rename a Channel failed to return the channel data.");
 
         return res.getChannel();
     }

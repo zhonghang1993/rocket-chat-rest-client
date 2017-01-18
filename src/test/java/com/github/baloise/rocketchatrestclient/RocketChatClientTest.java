@@ -26,7 +26,7 @@ public class RocketChatClientTest {
 		ServerInfo info = rc.getServerInformation();
 		assertFalse("The Rocket.Chat Version is empty, when it shouldn't be.", info.getVersion().isEmpty());
 		
-		User rocketCat = rc.getUser("rocket.cat");
+		User rocketCat = rc.getUsersApi().getInfo("rocket.cat");
 		assertTrue("The Rocket.Cat user's id doesn't match what it should be.", "rocket.cat".equals(rocketCat.getId()));
 	}
 	
