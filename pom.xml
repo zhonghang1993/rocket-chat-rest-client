@@ -50,7 +50,7 @@
 				</configuration>
 			</plugin>
 
-			<plugin>
+<!--			<plugin>
 				<groupId>io.fabric8</groupId>
 				<artifactId>docker-maven-plugin</artifactId>
 				<version>0.17.1</version>
@@ -109,7 +109,7 @@
 						</goals>
 					</execution>
 				</executions>
-			</plugin>
+			</plugin>-->
 
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
@@ -128,7 +128,7 @@
 		</plugins>
 	</build>
 
-	<distributionManagement>
+<!--	<distributionManagement>
 		<repository>
 			<id>repo-release</id>
 			<name>Craftyn Releases</name>
@@ -139,5 +139,5 @@
 			<name>Craftyn Snapshots</name>
 			<url>https://repo.craftyn.com/repository/snapshots/</url>
 		</snapshotRepository>
-	</distributionManagement>
+	</distributionManagement>-->
 </project>
