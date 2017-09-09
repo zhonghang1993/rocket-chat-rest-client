@@ -74,7 +74,9 @@ public enum RocketChatRestApiV1 {
     /** Retrieves the user information from the server. */
     UsersInfo("users.info", HttpMethods.GET, true),
     /** Retrieves a list of all the users in the server. */
-    UsersList("users.list", HttpMethods.GET, true);
+    UsersList("users.list", HttpMethods.GET, true),
+    /** Creates a new user. */
+    UsersCreate("users.create", HttpMethods.POST, true);
 
     private String methodName;
     private HttpMethods httpMethod;

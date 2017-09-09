@@ -3,6 +3,7 @@ package com.github.baloise.rocketchatrestclient;
 import java.io.IOException;
 
 import com.github.baloise.rocketchatrestclient.model.User;
+import com.github.baloise.rocketchatrestclient.requests.CreateUserRequest;
 
 public class RocketChatRestApiV1Users {
     private static final String USER_ID_PARAM_KEY = "userId";
@@ -55,4 +56,18 @@ public class RocketChatRestApiV1Users {
 
         return res.getUser();
     }
+
+
+    public User create(CreateUserRequest createUserRequest) throws IOException {
+        RocketChatClientResponse res = this.callBuilder.buildCall(RocketChatRestApiV1.UsersCreate, null, createUserRequest);
+
+        if (!res.isSuccessful())
+            throw new IOException("The call to create the User's was unsuccessful: \"" + res.getError() + "\"");
+
+        if (!res.hasUser())
+            throw new IOException("Get User Information failed to retrieve a user.");
+
+        return res.getUser();
+    }
+
 }
