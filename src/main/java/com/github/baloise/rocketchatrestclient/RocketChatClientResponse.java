@@ -2,13 +2,7 @@ package com.github.baloise.rocketchatrestclient;
 
 import com.fasterxml.jackson.annotation.JsonGetter;
 import com.fasterxml.jackson.annotation.JsonSetter;
-import com.github.baloise.rocketchatrestclient.model.Channel;
-import com.github.baloise.rocketchatrestclient.model.Group;
-import com.github.baloise.rocketchatrestclient.model.Integration;
-import com.github.baloise.rocketchatrestclient.model.Message;
-import com.github.baloise.rocketchatrestclient.model.Room;
-import com.github.baloise.rocketchatrestclient.model.ServerInfo;
-import com.github.baloise.rocketchatrestclient.model.User;
+import com.github.baloise.rocketchatrestclient.model.*;
 
 //This is an internal class that really shouldn't be used,
 //it's just meant to handle the response from the server
@@ -28,6 +22,7 @@ public class RocketChatClientResponse {
     private Group group;
     private Integration[] integrations;
     private Integration integration;
+    private AuthData data;
 
     public void setSuccess(boolean result) {
         this.success = result;
@@ -195,5 +190,17 @@ public class RocketChatClientResponse {
     
     public boolean hasIntegration() {
         return this.integration != null;
+    }
+
+    public AuthData getData() {
+        return data;
+    }
+
+    public void setData(AuthData data) {
+        this.data = data;
+    }
+
+    public boolean hasAuthData(){
+        return this.data !=null;
     }
 }

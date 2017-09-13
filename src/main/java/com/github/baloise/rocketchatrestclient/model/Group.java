@@ -18,4 +18,11 @@ public class Group extends Room {
         this.setId(id);
         this.setName(name);
     }
+
+    public Group(String name,String[] usernames) {
+        super();
+        this.setType(RoomType.PRIVATE_GROUP);
+        this.setName(name);
+        this.setUsernames(usernames);
+    }
 }
