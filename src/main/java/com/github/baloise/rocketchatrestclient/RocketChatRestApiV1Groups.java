@@ -2,7 +2,6 @@ package com.github.baloise.rocketchatrestclient;
 
 import java.io.IOException;
 
-import com.github.baloise.rocketchatrestclient.model.Channel;
 import com.github.baloise.rocketchatrestclient.model.Group;
 import com.github.baloise.rocketchatrestclient.model.Room;
 import com.github.baloise.rocketchatrestclient.model.User;
