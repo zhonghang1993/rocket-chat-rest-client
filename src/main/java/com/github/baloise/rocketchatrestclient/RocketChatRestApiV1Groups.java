@@ -6,6 +6,7 @@ import com.github.baloise.rocketchatrestclient.model.Group;
 import com.github.baloise.rocketchatrestclient.model.Room;
 import com.github.baloise.rocketchatrestclient.model.User;
 import com.github.baloise.rocketchatrestclient.requests.RoomAndUserRequest;
+import com.github.baloise.rocketchatrestclient.requests.RoomCreateRequest;
 
 public class RocketChatRestApiV1Groups {
     private static final String ROOM_ID_PARAM_KEY = "roomId";
@@ -58,7 +59,7 @@ public class RocketChatRestApiV1Groups {
      *             result wasn't successful
      */
     public Group create(Group group) throws IOException {
-        RocketChatClientResponse res = this.callBuilder.buildCall(RocketChatRestApiV1.GroupsCreate, null, group);
+        RocketChatClientResponse res = this.callBuilder.buildCall(RocketChatRestApiV1.GroupsCreate, null, new RoomCreateRequest(group.getName(),group.getUsernames()));
 
         if (!res.isSuccessful())
             throw new IOException("The call to create a Group was unsuccessful: \"" + res.getError() + "\"");
@@ -246,5 +247,12 @@ public class RocketChatRestApiV1Groups {
 
         if (!res.isSuccessful())
             throw new IOException("The call to unarchive the Group was unsuccessful: \"" + res.getError() + "\"");
+    }
+
+    public void addOwner(Group group, User user) throws IOException {
+        RocketChatClientResponse res = this.callBuilder.buildCall(RocketChatRestApiV1.GroupsAddOwner, null, new RoomAndUserRequest(group.getId(), user.getId()));
+
+        if (!res.isSuccessful())
+            throw new IOException("The call to add an owner was unsuccessful: \"" + res.getError() + "\"");
     }
 }

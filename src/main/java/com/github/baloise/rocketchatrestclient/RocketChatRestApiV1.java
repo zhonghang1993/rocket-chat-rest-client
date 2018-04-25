@@ -45,6 +45,8 @@ public enum RocketChatRestApiV1 {
     ChatDelete("chat.delete", HttpMethods.POST, true),
     /** Sends a new chat message */
     ChatPostMessage("chat.postMessage", HttpMethods.POST, true),
+    /* Adds an owner to the group*/
+    GroupsAddOwner("groups.addOwner", HttpMethods.POST, true),
     /** Retrieves information about a <strong>private</strong> group, but only if the user is part of it. */
     GroupsInfo("groups.info", HttpMethods.GET, true),
     /** Retrieves a list of all the <strong>private</strong> groups the auth'd user has joined. */
@@ -74,7 +76,11 @@ public enum RocketChatRestApiV1 {
     /** Retrieves the user information from the server. */
     UsersInfo("users.info", HttpMethods.GET, true),
     /** Retrieves a list of all the users in the server. */
-    UsersList("users.list", HttpMethods.GET, true);
+    UsersList("users.list", HttpMethods.GET, true),
+    /** Creates a new user. */
+    UsersCreate("users.create", HttpMethods.POST, true),
+    /** Creates an auth token for an existing user**/
+    UsersCreateToken("users.createToken",HttpMethods.POST, true);
 
     private String methodName;
     private HttpMethods httpMethod;
