@@ -24,6 +24,9 @@ import com.mashape.unirest.request.HttpRequestWithBody;
  * @since 0.1.0
  */
 public class RocketChatClientCallBuilder {
+	
+	public static final String CALL_METHOD_NAME_ARGUMENTS_KEY = "methodNameArgs";
+	
     private final ObjectMapper objectMapper;
     private final String serverUrl;
     private final String user;
@@ -157,8 +160,6 @@ public class RocketChatClientCallBuilder {
             throw new IOException(e);
         }
     }
-	
-	public static final String CALL_METHOD_NAME_ARGUMENTS_KEY = "methodNameArgs";
 	
 	/**
 	 * If variables like {0} are used within
