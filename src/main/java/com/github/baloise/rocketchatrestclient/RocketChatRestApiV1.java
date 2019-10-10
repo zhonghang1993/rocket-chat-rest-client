@@ -73,6 +73,12 @@ public enum RocketChatRestApiV1 {
     ImsList("ims.list", HttpMethods.GET, true),
     /** Gets the information about the server, including version and build commit. */
     Info("info", HttpMethods.GET, false),
+    /** Gets all settings on the server */
+    SettingsGetAll("settings", HttpMethods.GET, true),
+    /** Get a single setting entry by id */
+    SettingGetById("settings/{0}", HttpMethods.GET, true),
+    /** Set a single setting by its id */
+    SettingSetById("settings/{0}", HttpMethods.POST, true),
     /** Retrieves the user information from the server. */
     UsersInfo("users.info", HttpMethods.GET, true),
     /** Retrieves a list of all the users in the server. */

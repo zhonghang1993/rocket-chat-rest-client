@@ -18,6 +18,7 @@ public class RocketChatClient {
     private RocketChatRestApiV1Chat chat;
     private RocketChatRestApiV1Groups groups;
     private RocketChatRestApiV1Users users;
+    private RocketChatRestApiV1Settings settings;
 
     /**
      * Initialize a new instance of the client providing the server's url along
@@ -37,6 +38,7 @@ public class RocketChatClient {
         this.chat = new RocketChatRestApiV1Chat(this.callBuilder);
         this.groups = new RocketChatRestApiV1Groups(this.callBuilder);
         this.users = new RocketChatRestApiV1Users(this.callBuilder);
+		this.settings = new RocketChatRestApiV1Settings(this.callBuilder);
     }
 
     /**
@@ -84,5 +86,9 @@ public class RocketChatClient {
     
     public RocketChatRestApiV1Users getUsersApi() {
         return this.users;
+    }
+    
+    public RocketChatRestApiV1Settings getSettingsApi() {
+    	return this.settings;
     }
 }

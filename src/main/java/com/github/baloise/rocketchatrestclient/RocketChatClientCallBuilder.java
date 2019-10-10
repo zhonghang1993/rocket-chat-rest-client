@@ -1,10 +1,12 @@
 package com.github.baloise.rocketchatrestclient;
 
 import java.io.IOException;
+import java.text.MessageFormat;
 import java.util.Map.Entry;
 
 import org.json.JSONObject;
 
+import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.mashape.unirest.http.HttpResponse;
@@ -22,6 +24,9 @@ import com.mashape.unirest.request.HttpRequestWithBody;
  * @since 0.1.0
  */
 public class RocketChatClientCallBuilder {
+	
+	public static final String CALL_METHOD_NAME_ARGUMENTS_KEY = "methodNameArgs";
+	
     private final ObjectMapper objectMapper;
     private final String serverUrl;
     private final String user;
@@ -48,6 +53,7 @@ public class RocketChatClientCallBuilder {
         this.userId = "";
         this.objectMapper = new ObjectMapper();
         this.objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+        this.objectMapper.setSerializationInclusion(Include.NON_NULL);
     }
 
     protected RocketChatClientResponse buildCall(RocketChatRestApiV1 call) throws IOException {
@@ -103,8 +109,9 @@ public class RocketChatClientCallBuilder {
         this.userId = data.getString("userId");
     }
 
-    private RocketChatClientResponse buildGetCall(RocketChatRestApiV1 call, RocketChatQueryParams queryParams) throws IOException {
-        GetRequest req = Unirest.get(serverUrl + call.getMethodName());
+    private RocketChatClientResponse buildGetCall(RocketChatRestApiV1 call, RocketChatQueryParams queryParams) throws IOException { 	
+    	String methodName = prepareCallMethodName(call, queryParams);
+    	GetRequest req = Unirest.get(serverUrl + methodName);
 
         if (call.requiresAuth()) {
             req.header("X-Auth-Token", authToken);
@@ -126,8 +133,9 @@ public class RocketChatClientCallBuilder {
         }
     }
 
-    private RocketChatClientResponse buildPostCall(RocketChatRestApiV1 call, RocketChatQueryParams queryParams, Object body) throws IOException {
-        HttpRequestWithBody req = Unirest.post(serverUrl + call.getMethodName()).header("Content-Type", "application/json");
+	private RocketChatClientResponse buildPostCall(RocketChatRestApiV1 call, RocketChatQueryParams queryParams, Object body) throws IOException {
+		String methodName = prepareCallMethodName(call, queryParams);
+		HttpRequestWithBody req = Unirest.post(serverUrl + methodName).header("Content-Type", "application/json");
 
         if (call.requiresAuth()) {
             req.header("X-Auth-Token", authToken);
@@ -152,4 +160,26 @@ public class RocketChatClientCallBuilder {
             throw new IOException(e);
         }
     }
+	
+	/**
+	 * If variables like {0} are used within
+	 * {@link RocketChatRestApiV1#getMethodName()}, this method replaces the
+	 * respective variables with the values found in
+	 * {@link RocketChatQueryParams}#<code>methodNameArgs</code>.
+	 * 
+	 * @param call
+	 * @param queryParams
+	 * @return
+	 */
+	private String prepareCallMethodName(RocketChatRestApiV1 call, RocketChatQueryParams queryParams) {
+		String methodName = call.getMethodName();
+		if (methodName.contains("{") && methodName.contains("}")) {
+			String[] methodArguments = queryParams.get().get(CALL_METHOD_NAME_ARGUMENTS_KEY).split(",");
+			methodName = MessageFormat.format(methodName, (Object[]) methodArguments);
+			queryParams.get().remove(CALL_METHOD_NAME_ARGUMENTS_KEY);
+		} else {
+			methodName = call.getMethodName();
+		}
+		return methodName;
+	}
 }

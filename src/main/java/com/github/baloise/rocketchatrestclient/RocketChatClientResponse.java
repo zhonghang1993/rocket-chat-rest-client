@@ -9,6 +9,8 @@ import com.github.baloise.rocketchatrestclient.model.*;
 public class RocketChatClientResponse {
     private boolean success;
 //    private int count, offset, total;
+    private String id;
+    private String value;
     private String error;
     private ServerInfo info;
     private Message[] messages;
@@ -23,7 +25,37 @@ public class RocketChatClientResponse {
     private Integration[] integrations;
     private Integration integration;
     private AuthData data;
+    private Setting setting;
+    private Setting[] settings;
 
+    public boolean hasId() {
+    	return this.id != null;
+    }
+    
+    @JsonSetter("_id")
+    public void setId(String id) {
+    	this.id = id;
+    }
+    
+    @JsonGetter("_id")
+    public String getId() {
+    	return this.id;
+    }
+    
+    public boolean hasValue() {
+    	return this.value != null;
+    }
+    
+	@JsonGetter("value")
+	public String getValue() {
+		return value;
+	}
+
+	@JsonSetter("value")
+	public void setValue(String value) {
+		this.value = value;
+	}
+    
     public void setSuccess(boolean result) {
         this.success = result;
     }
@@ -128,6 +160,30 @@ public class RocketChatClientResponse {
 
     public boolean hasChannel() {
         return this.channel != null;
+    }
+    
+    public boolean hasSetting() {
+    	return this.setting != null;
+    }
+    
+    public Setting getSetting() {
+    	return this.setting;
+    }
+    
+    public void setSetting(Setting setting) {
+    	this.setting = setting;
+    }
+    
+    public boolean hasSettings() {
+    	return this.settings != null;
+    }
+    
+    public Setting[] getSettings() {
+    	return this.settings;
+    }
+    
+    public void setSettings(Setting[] settings) {
+    	this.settings = settings;
     }
 
     public void setGroups(Group[] groups) {
