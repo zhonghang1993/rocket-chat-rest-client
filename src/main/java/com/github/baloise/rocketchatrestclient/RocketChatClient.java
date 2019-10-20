@@ -1,8 +1,20 @@
 package com.github.baloise.rocketchatrestclient;
 
 import java.io.IOException;
+import java.security.KeyManagementException;
+import java.security.KeyStoreException;
+import java.security.NoSuchAlgorithmException;
+
+import javax.net.ssl.SSLContext;
+
+import org.apache.http.conn.ssl.SSLConnectionSocketFactory;
+import org.apache.http.conn.ssl.SSLContexts;
+import org.apache.http.conn.ssl.TrustSelfSignedStrategy;
+import org.apache.http.impl.client.CloseableHttpClient;
+import org.apache.http.impl.client.HttpClients;
 
 import com.github.baloise.rocketchatrestclient.model.ServerInfo;
+import com.mashape.unirest.http.Unirest;
 
 /**
  * Client for Rocket.Chat which relies on the REST API v1.
@@ -40,6 +52,21 @@ public class RocketChatClient {
         this.users = new RocketChatRestApiV1Users(this.callBuilder);
 		this.settings = new RocketChatRestApiV1Settings(this.callBuilder);
     }
+    
+    /**
+     * Trust self-signed certificates on the rocketchat server url.
+     * @throws KeyManagementException
+     * @throws NoSuchAlgorithmException
+     * @throws KeyStoreException
+     */
+	public void trustSelfSignedCertificates()
+			throws KeyManagementException, NoSuchAlgorithmException, KeyStoreException {
+		SSLContext sslcontext = SSLContexts.custom().loadTrustMaterial(null, new TrustSelfSignedStrategy()).build();
+		
+		SSLConnectionSocketFactory sslsf = new SSLConnectionSocketFactory(sslcontext, SSLConnectionSocketFactory.ALLOW_ALL_HOSTNAME_VERIFIER);
+		CloseableHttpClient httpclient = HttpClients.custom().setSSLSocketFactory(sslsf).build();
+		Unirest.setHttpClient(httpclient);
+	}
 
     /**
      * Forces a logout and clears the auth token if no exception happened.
