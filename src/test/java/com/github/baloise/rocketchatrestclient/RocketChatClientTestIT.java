@@ -2,6 +2,9 @@ package com.github.baloise.rocketchatrestclient;
 
 import static org.junit.Assert.*;
 
+import java.util.Arrays;
+import java.util.List;
+
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -10,6 +13,7 @@ import com.github.baloise.rocketchatrestclient.model.Channel;
 import com.github.baloise.rocketchatrestclient.model.Group;
 import com.github.baloise.rocketchatrestclient.model.Room;
 import com.github.baloise.rocketchatrestclient.model.ServerInfo;
+import com.github.baloise.rocketchatrestclient.model.Setting;
 import com.github.baloise.rocketchatrestclient.model.User;
 import com.github.baloise.rocketchatrestclient.util.TestConnectionInfo;
 
@@ -148,4 +152,28 @@ public class RocketChatClientTestIT {
         group = this.rc.getGroupsApi().rename(group);
         assertEquals(TEST_CASE_8, group.getName());
     }
+    
+	@Test
+	public void testGetSettingById() throws Exception{
+		Setting setting = this.rc.getSettingsApi().getById("Organization_Name");
+		assertEquals("Organization_Name", setting.getId());
+		assertEquals("", setting.getValue());
+	}
+	
+	@Test
+	public void testSetSettingById() throws Exception{
+		this.rc.getSettingsApi().setById("Organization_Name", "TestOrganizationName");
+		Setting setting = this.rc.getSettingsApi().getById("Organization_Name");
+		assertEquals("TestOrganizationName", setting.getValue());
+	}
+	
+	@Test
+	public void testListSettings() throws Exception{
+		Setting[] settings = this.rc.getSettingsApi().list();
+		assertNotNull(settings);
+		List<Setting> _settings = Arrays.asList(settings);
+		Setting organizationNameSetting = _settings.stream()
+			.filter(e -> "Organization_Name".equals(e.getId())).findFirst().orElse(null);
+		assertNotNull(organizationNameSetting);
+	}
 }
