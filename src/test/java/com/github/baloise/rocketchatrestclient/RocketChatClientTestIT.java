@@ -2,6 +2,7 @@ package com.github.baloise.rocketchatrestclient;
 
 import static org.junit.Assert.*;
 
+import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 
@@ -161,10 +162,24 @@ public class RocketChatClientTestIT {
 	}
 	
 	@Test
-	public void testSetSettingById() throws Exception{
+	public void testSetSettingByIdString() throws Exception{
 		this.rc.getSettingsApi().setById("Organization_Name", "TestOrganizationName");
 		Setting setting = this.rc.getSettingsApi().getById("Organization_Name");
 		assertEquals("TestOrganizationName", setting.getValue());
+	}
+
+	@Test
+	public void testSetSettingByIdStringWithEmptyValue() throws IOException {
+		this.rc.getSettingsApi().setById("Accounts_RegistrationForm_LinkReplacementText", "");
+		Setting setting = this.rc.getSettingsApi().getById("Accounts_RegistrationForm_LinkReplacementText");
+		assertEquals("", setting.getValue());
+	}
+	
+	@Test
+	public void testSetSettingByIdBoolean() throws Exception{
+		this.rc.getSettingsApi().setById("SAML_Custom_Default", Boolean.TRUE);
+		Setting setting = this.rc.getSettingsApi().getById("SAML_Custom_Default");
+		assertEquals(Boolean.TRUE, setting.getValue());
 	}
 	
 	@Test
