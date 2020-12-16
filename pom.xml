@@ -68,15 +68,7 @@
 							<autoCreateCustomNetworks>true</autoCreateCustomNetworks>
 							<images>
 								<image>
-<<<<<<< Upstream, based on origin/master
-<<<<<<< Upstream, based on origin/master
 									<name>rocketchat:3.12</name>
-=======
-									<name>rocketchat:3.3.3</name>
->>>>>>> 5289f12 Update build test against rocketchat 3.3.3
-=======
-									<name>rocketchat:3.3.3</name>
->>>>>>> 0bc3efd Fix pom.xml
 									<alias>rocketchat</alias>
 									<build>
 										<dockerFileDir>rocketchat</dockerFileDir>
