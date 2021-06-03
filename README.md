@@ -1,7 +1,7 @@
 # rocket-chat-rest-client
 Lightweight Java client for [Rocket.Chat](https://rocket.chat/)'s [REST API](https://rocket.chat/docs/developer-guides/rest-api) using [Unirest](http://unirest.io/java.html) and [Jackson](https://github.com/FasterXML/jackson-databind).
 
-[![Build Status](https://travis-ci.org/baloise/rocket-chat-rest-client.svg?branch=master)](https://travis-ci.org/baloise/rocket-chat-rest-client) [![Build Status](https://ci.craftyn.com/job/rocket-chat-rest-client/badge/icon)](https://ci.craftyn.com/job/rocket-chat-rest-client/) [![Codacy Badge](https://api.codacy.com/project/badge/Grade/a9564ad6e28743bea43b056ef667f328)](https://www.codacy.com/app/graywolf336/rocket-chat-rest-client?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=baloise/rocket-chat-rest-client&amp;utm_campaign=Badge_Grade)
+[![Build Status](https://travis-ci.com/baloise/rocket-chat-rest-client.svg?branch=master)](https://travis-ci.com/baloise/rocket-chat-rest-client) [![Build Status](https://ci.craftyn.com/job/rocket-chat-rest-client/badge/icon)](https://ci.craftyn.com/job/rocket-chat-rest-client/) [![Codacy Badge](https://api.codacy.com/project/badge/Grade/a9564ad6e28743bea43b056ef667f328)](https://www.codacy.com/app/graywolf336/rocket-chat-rest-client?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=baloise/rocket-chat-rest-client&amp;utm_campaign=Badge_Grade)
 
 ## Notes
 * Requires Rocket.Chat v0.49.2 due to massive changes from Rocket.Chat, also v0.48 rewrote the REST API, see the [pull request #5140](https://github.com/RocketChat/Rocket.Chat/pull/5140) for details
