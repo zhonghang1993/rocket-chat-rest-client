@@ -15,6 +15,7 @@ public class RocketChatClientResponse {
     private ServerInfo info;
     private Message[] messages;
     private Message message;
+    private ImRoom imRoom;
     private User[] users;
     private User user;
     private Channel[] channels;
@@ -258,5 +259,14 @@ public class RocketChatClientResponse {
 
     public boolean hasAuthData(){
         return this.data !=null;
+    }
+
+    @JsonGetter("room")
+    public ImRoom getImRoom() {
+        return imRoom;
+    }
+    @JsonSetter("room")
+    public void setImRoom(ImRoom imRoom) {
+        this.imRoom = imRoom;
     }
 }

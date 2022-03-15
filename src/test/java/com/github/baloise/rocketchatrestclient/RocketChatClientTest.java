@@ -15,9 +15,9 @@ public class RocketChatClientTest {
     
     @Before
     public void setUp() {
-        String serverUrl = "https://demo.rocket.chat/api/";
-        String user = "";
-        String password = "";
+        String serverUrl = "http://192.168.10.153:3000/api/";
+        String user = "admin";
+        String password = "bigbigsun";
         rc = new RocketChatClient(serverUrl, user, password);
     }
 
@@ -26,8 +26,8 @@ public class RocketChatClientTest {
 		ServerInfo info = rc.getServerInformation();
 		assertFalse("The Rocket.Chat Version is empty, when it shouldn't be.", info.getVersion().isEmpty());
 		
-		User rocketCat = rc.getUsersApi().getInfo("rocket.cat");
-		assertTrue("The Rocket.Cat user's id doesn't match what it should be.", "rocket.cat".equals(rocketCat.getId()));
+		User rocketCat = rc.getUsersApi().getInfo("66qBpKdiTRC5mE59r");
+		assertTrue("The Rocket.Cat user's id doesn't match what it should be.", "66qBpKdiTRC5mE59r".equals(rocketCat.getId()));
 	}
 	
 	@Test
