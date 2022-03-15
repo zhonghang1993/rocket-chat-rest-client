@@ -1,48 +1,14 @@
-# rocket-chat-rest-client
-Lightweight Java client for [Rocket.Chat](https://rocket.chat/)'s [REST API](https://rocket.chat/docs/developer-guides/rest-api) using [Unirest](http://unirest.io/java.html) and [Jackson](https://github.com/FasterXML/jackson-databind).
+# 对rocket-chat-rest-client 进行二次开发
 
-[![Build Status](https://travis-ci.com/baloise/rocket-chat-rest-client.svg?branch=master)](https://travis-ci.com/baloise/rocket-chat-rest-client) [![Build Status](https://ci.craftyn.com/job/rocket-chat-rest-client/badge/icon)](https://ci.craftyn.com/job/rocket-chat-rest-client/) [![Codacy Badge](https://api.codacy.com/project/badge/Grade/a9564ad6e28743bea43b056ef667f328)](https://www.codacy.com/app/graywolf336/rocket-chat-rest-client?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=baloise/rocket-chat-rest-client&amp;utm_campaign=Badge_Grade)
+### 背景
 
-## Notes
-* Requires Rocket.Chat v0.49.2 due to massive changes from Rocket.Chat, also v0.48 rewrote the REST API, see the [pull request #5140](https://github.com/RocketChat/Rocket.Chat/pull/5140) for details
-* This api is still a work in progress, feel free to submit pull requests to add functionality
-* Server url doesn't require `api/` anymore, but it can still be provided
-* None of the results are cached, every time a method is called it goes out and gets it
-* The method calls are sync and blocking
-* Maven is configured to startup Rocket.Chat v.0.48-develop via docker therefore docker must be installed.
+- 由于rocket-chat-rest-client已经很久没有维护过了，但是rocket.chat已经更新了很多版本，发布了很多新的接口。
+- 目前的旧版本，支持群聊的功能，但是对个人私聊功能没有。
+- 所以对IM Endpoints接口中的create进行了补充开发，得到rid（也就是roomId）。
 
-### JavaDoc
-The JavaDoc is generated per build: https://ci.craftyn.com/job/rocket-chat-rest-client/javadoc/
+### 官方接口文档地址
 
-### Maven
-```xml
-<repositories>
-    <repository>
-        <id>repo-snapshots</id>
-        <url>https://repo.craftyn.com/repository/snapshots/</url>
-    </repository>
-</repositories>
+https://developer.rocket.chat/reference/api/rest-api/endpoints/team-collaboration-endpoints/im-endpoints/create
 
-<dependencies>
-    <dependency>
-        <groupId>com.github.baloise</groupId>
-        <artifactId>rocket-chat-rest-client</artifactId>
-        <version>0.1.2-SNAPSHOT</version>
-    </dependency>
-</dependencies>
-```
-
-### Compiling
-
-The maven build needs [Docker](https://www.docker.com) for integration testing. Please install it for your platform before running and also make sure your user has permission to use the docker command (Linux, add your user to the docker group).
-
-```
-mvn clean install
-```
-
-To keep the docker containers running:
-
-```
-mvn -Ddocker.keepRunning clean install
-```
-
+### 示例
+测试类：RocketChatClientImTest->create()，创建和某人私聊的房间(direct message ，硬着翻译，就是直聊)，并且发送一条测试消息。
